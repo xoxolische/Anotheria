@@ -12,25 +12,32 @@ public class Server {
 		int port = 2453;
 		try {
 			ServerSocket ss = new ServerSocket(port);
-
-			
-			System.out.println("Waiting for a connection...");
-			Socket socket = ss.accept(); 
-			
-			System.out.println("Connection established.");
-
-			InputStream sin = socket.getInputStream();
-			OutputStream sout = socket.getOutputStream();
-			DataInputStream in = new DataInputStream(sin);
-			DataOutputStream out = new DataOutputStream(sout);
-
-			String line = null;
 			while (true) {
-				line = in.readUTF();
-				System.out.println("Client : " + line);
-				System.out.println("Return to client in upper case...");
-				out.writeUTF(line.toUpperCase());
-				out.flush();
+
+				System.out.println("Waiting for a connection...");
+				Socket socket = ss.accept();
+
+				System.out.println("Connection established.");
+
+				InputStream sin = socket.getInputStream();
+				OutputStream sout = socket.getOutputStream();
+				DataInputStream in = new DataInputStream(sin);
+				DataOutputStream out = new DataOutputStream(sout);
+
+				String line = null;
+				while (true) {
+					try {
+						line = in.readUTF();
+						System.out.println("Client : " + line);
+						System.out.println("Returned to client in upper case...");
+						out.writeUTF(line.toUpperCase());
+						out.flush();
+					} catch (Exception e) {
+						System.out.println("Client disconnected!");
+						socket.close();
+						break;
+					}
+				}
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

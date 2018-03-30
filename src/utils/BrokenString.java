@@ -1,5 +1,10 @@
 package utils;
 
+/**
+ * 
+ * @author Nikita Pavlov
+ * "Bad" realization of object for getting infinite loop in hashMap
+ */
 public class BrokenString {
 
 	private String s;
