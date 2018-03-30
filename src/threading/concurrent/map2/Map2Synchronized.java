@@ -3,24 +3,23 @@ package threading.concurrent.map2;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-public class Map2synchronizedMap extends Thread {
+public class Map2Synchronized extends Thread {
 
 	private static String[] data1;
 
-	private static Map<Integer, String> map = Collections.synchronizedMap(new HashMap<>());
+	private static Map<Integer, String> map = new HashMap<>();
 
 	public static void main(String[] args) {
 		data1 = getWords();
 
-		Map2synchronizedMap m1 = new Map2synchronizedMap();
+		Map2Synchronized m1 = new Map2Synchronized();
 		m1.start();
-		Map2synchronizedMap m2 = new Map2synchronizedMap();
+		Map2Synchronized m2 = new Map2Synchronized();
 		m2.start();
 
 		try {
@@ -46,8 +45,12 @@ public class Map2synchronizedMap extends Thread {
 	@Override
 	public void run() {
 		for (int i = 0; i < data1.length; i++) {
-			map.put(data1[i].hashCode(), data1[i] + this.getName());
+			sPut(data1[i].hashCode(), data1[i] + this.getName());
 		}
+	}
+
+	private static synchronized void sPut(int k, String v) {
+		map.put(k, v);
 	}
 
 	private static BufferedReader getFileInBuffer(String fileName) {
