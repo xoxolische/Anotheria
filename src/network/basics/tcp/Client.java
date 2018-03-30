@@ -30,8 +30,8 @@ public class Client {
 				line = in.readUTF();
 				System.out.println("Server : " + line);
 			}
-		} catch (Exception x) {
-			x.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 }
