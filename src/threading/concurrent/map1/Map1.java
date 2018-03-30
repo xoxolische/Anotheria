@@ -1,4 +1,4 @@
-package threading.concurrent;
+package threading.concurrent.map1;
 
 import java.io.BufferedReader;
 import java.io.File;

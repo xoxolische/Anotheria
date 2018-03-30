@@ -1,4 +1,4 @@
-package threading.concurrent;
+package threading.concurrent.map3;
 
 public class Map3 {
 
