@@ -9,8 +9,6 @@ import java.io.OutputStream;
 import java.net.InetAddress;
 import java.net.Socket;
 
-import javax.swing.JFileChooser;
-
 public class Client {
 	public static void main(String[] args) {
 		int serverPort = 2453;
@@ -50,6 +48,7 @@ public class Client {
 					case GET:
 						out.writeUTF(line);
 						out.flush();
+						FileHelper.recieve();
 						line = in.readUTF();
 						System.out.println("Server : " + line);
 						break;
@@ -63,4 +62,5 @@ public class Client {
 			e.printStackTrace();
 		}
 	}
+
 }

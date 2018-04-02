@@ -58,6 +58,7 @@ public class Server implements Runnable {
 						out.flush();
 						break;
 					case GET:
+						send();
 						out.writeUTF("FILE RETURNED NA");
 						out.flush();
 						break;
@@ -79,5 +80,9 @@ public class Server implements Runnable {
 				break;
 			}
 		}
+	}
+
+	synchronized public void send() throws IOException {
+		FileHelper.send();
 	}
 }
