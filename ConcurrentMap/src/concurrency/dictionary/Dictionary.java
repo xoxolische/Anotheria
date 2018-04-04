@@ -1,4 +1,4 @@
-package com.pavlov.dictionary.model;
+package concurrency.dictionary;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -6,8 +6,6 @@ import java.io.FileReader;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-
-import com.pavlov.dictionary.exception.DictionaryAlreadyInitialized;
 
 /**
  * Base Dictionary class example.
@@ -19,32 +17,27 @@ import com.pavlov.dictionary.exception.DictionaryAlreadyInitialized;
  */
 public class Dictionary {
 
-	private static Map<String, String> d;
+	private Map<String, String> d;
 	private static String[] words = getArray(Const.TEST_1_466544);
 
-	public Map<String, String> getD() {
-		return d;
+	public Dictionary(Map<String, String> m) {
+		this.d = m;
 	}
-
-	public String[] getWords() {
-		return words;
-	}
-
+	
 	public void addWord(String word) {
 		if (d != null) {
 			d.put(word, word);
 		}
 	}
-
-	synchronized public void initializeDictionary(Map<String, String> m) throws DictionaryAlreadyInitialized {
-		if (d == null) {
-			d = m;
-		} else {
-			throw new DictionaryAlreadyInitialized();
-		}
+	public Map<String, String> getDictionary(){
+		return d;
+	}
+	
+	public String[] getWords() {
+		return words;
 	}
 
-	static String[] getArray(String book) {
+	private static String[] getArray(String book) {
 		try {
 			File f = new File(book);
 			FileReader fr = new FileReader(f);

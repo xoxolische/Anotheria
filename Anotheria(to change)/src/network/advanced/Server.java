@@ -13,8 +13,10 @@ public class Server implements Runnable {
 	Socket socket;
 	DataInputStream in;
 	DataOutputStream out;
+	ServerSocket t;
 
-	public Server(Socket socket, DataInputStream in, DataOutputStream out) {
+	public Server(Socket socket, DataInputStream in, DataOutputStream out, ServerSocket t) {
+		this.t = t;
 		this.socket = socket;
 		this.in = in;
 		this.out = out;
@@ -23,14 +25,14 @@ public class Server implements Runnable {
 	public static void main(String[] args) {
 		try {
 			ServerSocket commandSocket = new ServerSocket(PORT);
-
+			ServerSocket transfer = new ServerSocket(FileTransfer.PORT);
 			while (true) {
 				Socket socket = commandSocket.accept();
 				InputStream sin = socket.getInputStream();
 				OutputStream sout = socket.getOutputStream();
 				DataInputStream in = new DataInputStream(sin);
 				DataOutputStream out = new DataOutputStream(sout);
-				new Thread(new Server(socket, in, out)).start();
+				new Thread(new Server(socket, in, out, transfer)).start();
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -58,7 +60,7 @@ public class Server implements Runnable {
 						out.flush();
 						break;
 					case GET:
-						send();
+						
 						out.writeUTF("FILE RETURNED NA");
 						out.flush();
 						break;
@@ -80,9 +82,5 @@ public class Server implements Runnable {
 				break;
 			}
 		}
-	}
-
-	synchronized public void send() throws IOException {
-		FileHelper.send();
 	}
 }

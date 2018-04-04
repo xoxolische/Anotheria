@@ -46,6 +46,12 @@ public class Client {
 						System.out.println("Server : " + line);
 						break;
 					case GET:
+//						Socket socket = this.t.accept();
+//						InputStream sin = socket.getInputStream();
+//						OutputStream sout = socket.getOutputStream();
+//						DataInputStream in = new DataInputStream(sin);
+//						DataOutputStream out = new DataOutputStream(sout);
+						new Thread(new FileTransfer()).start();
 						out.writeUTF(line);
 						out.flush();
 						FileHelper.recieve();

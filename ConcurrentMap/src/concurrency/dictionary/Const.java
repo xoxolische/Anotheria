@@ -1,4 +1,4 @@
-package com.pavlov.dictionary.model;
+package concurrency.dictionary;
 
 public final class Const {
 	

@@ -16,11 +16,4 @@
       </plugin>
     </plugins>
   </build>
-  <dependencies>
-  	<dependency>
-  		<groupId>Dictionary</groupId>
-  		<artifactId>Dictionary</artifactId>
-  		<version>0.0.1-SNAPSHOT</version>
-  	</dependency>
-  </dependencies>
 </project>
