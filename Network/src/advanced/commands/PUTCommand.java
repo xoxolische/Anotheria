@@ -1,19 +1,20 @@
-package advanced.remake.commands;
+package advanced.commands;
 
+import java.io.File;
 import java.io.InputStream;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import advanced.remake.Server;
+import advanced.Server;
 
-public class GETCommand extends Command {
+public class PUTCommand extends Command {
 
 	private Pattern p;
 	private Server server;
-	private String memo;
+	private String file;
 
-	public GETCommand(Server server) {
-		p = Pattern.compile("[G][E][T][\\s].{1,255}");
+	public PUTCommand(Server server) {
+		p = Pattern.compile("[P][U][T][\\s].{1,255}");
 		this.server = server;
 	}
 
@@ -21,17 +22,14 @@ public class GETCommand extends Command {
 	public boolean isCommand(String cmd) {
 		Matcher m = p.matcher(cmd);
 		if (m.matches()) {
-			fileName(cmd);
+			file = cmd.split(" ")[1];
 			return true;
 		}
 		return false;
 	}
 
 	public Object execute(InputStream fileInput) {
-		return server.get(memo);
+		return server.put(file, fileInput);
 	}
 
-	private void fileName(String cmd) {
-		memo = cmd.split(" ")[1];
-	}
 }

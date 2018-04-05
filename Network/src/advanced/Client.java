@@ -1,4 +1,4 @@
-package advanced.remake;
+package advanced;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
@@ -18,11 +18,11 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 
-import advanced.remake.commands.DIRCommand;
-import advanced.remake.commands.GETCommand;
-import advanced.remake.commands.ICommand;
-import advanced.remake.commands.PUTCommand;
-import advanced.remake.transfer.DataTransfer;
+import advanced.commands.DIRCommand;
+import advanced.commands.GETCommand;
+import advanced.commands.ICommand;
+import advanced.commands.PUTCommand;
+import advanced.transfer.DataTransfer;
 
 public class Client {
 

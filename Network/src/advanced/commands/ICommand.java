@@ -1,4 +1,4 @@
-package advanced.remake.commands;
+package advanced.commands;
 
 import java.io.InputStream;
 

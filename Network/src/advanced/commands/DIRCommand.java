@@ -1,35 +1,31 @@
-package advanced.remake.commands;
+package advanced.commands;
 
-import java.io.File;
 import java.io.InputStream;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import advanced.remake.Server;
+import advanced.Server;
 
-public class PUTCommand extends Command {
+public class DIRCommand extends Command {
 
 	private Pattern p;
 	private Server server;
-	private String file;
 
-	public PUTCommand(Server server) {
-		p = Pattern.compile("[P][U][T][\\s].{1,255}");
+	public DIRCommand(Server server) {
+		p = Pattern.compile("[D][I][R]");
 		this.server = server;
 	}
 
 	@Override
 	public boolean isCommand(String cmd) {
 		Matcher m = p.matcher(cmd);
-		if (m.matches()) {
-			file = cmd.split(" ")[1];
+		if (m.matches())
 			return true;
-		}
 		return false;
 	}
 
 	public Object execute(InputStream fileInput) {
-		return server.put(file, fileInput);
+		return server.dir();
 	}
 
 }

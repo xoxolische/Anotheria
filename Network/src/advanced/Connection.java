@@ -1,14 +1,13 @@
-package advanced.remake;
+package advanced;
 
 import java.io.*;
 import java.net.Socket;
 
-
-import advanced.remake.commands.DIRCommand;
-import advanced.remake.commands.GETCommand;
-import advanced.remake.commands.ICommand;
-import advanced.remake.commands.PUTCommand;
-import advanced.remake.transfer.DataTransfer;
+import advanced.commands.DIRCommand;
+import advanced.commands.GETCommand;
+import advanced.commands.ICommand;
+import advanced.commands.PUTCommand;
+import advanced.transfer.DataTransfer;
 
 public class Connection implements Runnable {
 

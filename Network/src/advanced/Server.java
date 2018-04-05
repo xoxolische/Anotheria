@@ -1,4 +1,4 @@
-package advanced.remake;
+package advanced;
 
 import java.io.File;
 import java.io.FileOutputStream;
