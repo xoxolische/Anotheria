@@ -1,15 +1,27 @@
 package knight;
 
+/**
+ * This class represents Position for Knight.
+ * 
+ * @author Nikita Pavlov
+ *
+ */
 public class Position {
 
 	private int x;
 	private int y;
-	private boolean locked;
+	// private boolean locked;
 
+	/**
+	 * Constructor with X and Y parameters.
+	 * 
+	 * @param x
+	 * @param y
+	 */
 	public Position(int x, int y) {
 		this.x = x;
 		this.y = y;
-		this.locked = false;
+		// this.locked = false;
 	}
 
 	public int getAbsolute(int boardSize) {
@@ -32,19 +44,16 @@ public class Position {
 		this.y = y;
 	}
 
-	public boolean isLocked() {
-		return locked;
-	}
-
-	public void setLocked(boolean locked) {
-		this.locked = locked;
-	}
-
 	@Override
 	public String toString() {
 		return "Position [x=" + (x) + ", y=" + (y) + "]";
 	}
 
+	/**
+	 * Prints the board with # instead of 0 or 1 where # - is our Knight.
+	 * 
+	 * @param b
+	 */
 	public void print(Board b) {
 		for (int i = 0; i < b.getSize(); i++) {
 			for (int j = 0; j < b.getSize(); j++) {

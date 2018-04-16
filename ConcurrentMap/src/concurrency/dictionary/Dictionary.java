@@ -8,9 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Base Dictionary class example.
- * <p>
- * words array contains 466544 unique words.
+ * This class represents dictionary. Contains 466544 unique words from file.
  * 
  * @author Nikita Pavlov
  * 
@@ -20,19 +18,40 @@ public class Dictionary {
 	private Map<String, String> d;
 	private static String[] words = getArray(Const.TEST_1_466544);
 
+	/**
+	 * Constructor
+	 * 
+	 * @param m
+	 *            pass Map implementation for different situations
+	 */
 	public Dictionary(Map<String, String> m) {
 		this.d = m;
 	}
-	
+
+	/**
+	 * Adds word to our dictionary.
+	 * 
+	 * @param word
+	 */
 	public void addWord(String word) {
 		if (d != null) {
 			d.put(word, word);
 		}
 	}
-	public Map<String, String> getDictionary(){
+
+	/**
+	 * Getter for our dictionary Map
+	 * 
+	 * @return our dictionary
+	 */
+	public Map<String, String> getDictionary() {
 		return d;
 	}
-	
+
+	/**
+	 * Getter for array of words from the file.
+	 * @return String[] with words
+	 */
 	public String[] getWords() {
 		return words;
 	}

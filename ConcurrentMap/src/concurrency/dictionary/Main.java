@@ -8,7 +8,16 @@ import concurrency.dictionary.fix.LockDictionary;
 import concurrency.dictionary.fix.SynchronizedDictionary;
 import concurrency.dictionary.fix.SynchronizedKeyWord;
 
-public class Crasher {
+/**
+ * This class fills up our dictionaries with words in multiple threads. As we
+ * can see, HashMap without synchronization represents each time different value
+ * of size. However, synchronized Maps return every time the same correct value
+ * : 466544 words.
+ * 
+ * @author Nikita Pavlov
+ *
+ */
+public class Main {
 	private final static int THREADS = 4;
 
 	public static void main(String[] args) {

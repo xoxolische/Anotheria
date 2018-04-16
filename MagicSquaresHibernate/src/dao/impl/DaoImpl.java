@@ -12,18 +12,26 @@ import org.hibernate.query.Query;
 import dao.CRUD;
 import hibernate.HibernateUtil;
 
-public abstract class DaoImpl<E> implements CRUD<E>{
+/**
+ * Abstract class implements basic CRUD interface for given Entity.
+ * 
+ * @author Nikita Pavlov
+ *
+ * @param <E>
+ *            Entity we work with
+ */
+public abstract class DaoImpl<E> implements CRUD<E> {
 
 	protected final Class<E> entityClass;
 
 	public DaoImpl(Class<E> entityClass) {
 		this.entityClass = entityClass;
 	}
-	
+
 	@Override
 	public void create(E entity) {
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-		session.beginTransaction();	
+		session.beginTransaction();
 		try {
 			session.save(entity);
 			session.getTransaction().commit();
@@ -32,11 +40,11 @@ public abstract class DaoImpl<E> implements CRUD<E>{
 			e.printStackTrace();
 		}
 	}
-	
+
 	@Override
 	public E get(long id) {
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-		session.beginTransaction();	
+		session.beginTransaction();
 		try {
 			E e = session.get(entityClass, id);
 			session.getTransaction().commit();
@@ -47,7 +55,7 @@ public abstract class DaoImpl<E> implements CRUD<E>{
 			return null;
 		}
 	}
-	
+
 	@Override
 	public void update(E entity) {
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
@@ -59,7 +67,7 @@ public abstract class DaoImpl<E> implements CRUD<E>{
 			session.getTransaction().rollback();
 		}
 	}
-	
+
 	@Override
 	public void delete(long id) {
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
@@ -72,7 +80,7 @@ public abstract class DaoImpl<E> implements CRUD<E>{
 			session.getTransaction().rollback();
 		}
 	}
-	
+
 	@Override
 	public List<E> getAll() {
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();

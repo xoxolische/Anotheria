@@ -13,6 +13,12 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import magic.MagicSquare;
 
+/**
+ * Model class (Entity)
+ * 
+ * @author Nikita Pavlov
+ *
+ */
 @Entity
 @Table(name = "magic_squares")
 public class MagicSquareHibernate extends MagicSquare {
@@ -45,9 +51,9 @@ public class MagicSquareHibernate extends MagicSquare {
 	}
 
 	/**
-	 * This method must be called before save MagicSquare to DB
+	 * This method must be called before save MagicSquare to DB.
 	 * 
-	 * @return String
+	 * @return String and initializes squareView field.
 	 */
 	public String getSquareView() {
 		if (squareView == null) {

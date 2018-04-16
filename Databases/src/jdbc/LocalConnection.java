@@ -4,6 +4,12 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
+/**
+ * This class contains common data for connection to local postgreSQL database.
+ * 
+ * @author Nikita Pavlov
+ *
+ */
 public final class LocalConnection {
 
 	private static final String HOST = "localhost";

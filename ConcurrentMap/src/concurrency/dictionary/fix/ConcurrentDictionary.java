@@ -4,7 +4,13 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import concurrency.dictionary.Dictionary;
 
-public class ConcurrentDictionary extends Dictionary{
+/**
+ * This class shows ho to solve dictionary problem with ConcurrentHashMap.
+ * 
+ * @author Nikita Pavlov
+ *
+ */
+public class ConcurrentDictionary extends Dictionary {
 
 	public ConcurrentDictionary() {
 		super(new ConcurrentHashMap<>());

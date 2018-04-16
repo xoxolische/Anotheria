@@ -5,6 +5,12 @@ import java.io.InputStreamReader;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 
+/**
+ * Class - client.
+ * 
+ * @author Nikita Pavlov
+ *
+ */
 public class Client {
 	private Client() {
 	}
@@ -16,7 +22,7 @@ public class Client {
 			Registry registry = LocateRegistry.getRegistry(host);
 			Echo stub = (Echo) registry.lookup("Echo service");
 			BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-			while(true) {
+			while (true) {
 				String response = stub.echo(br.readLine());
 				System.out.println("Server: " + response);
 			}

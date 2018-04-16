@@ -4,12 +4,18 @@ import java.util.HashMap;
 
 import concurrency.dictionary.Dictionary;
 
-public class SynchronizedKeyWord extends Dictionary{
+/**
+ * This class shows ho to solve dictionary problem with "synchronized" keyword.
+ * 
+ * @author Nikita Pavlov
+ *
+ */
+public class SynchronizedKeyWord extends Dictionary {
 
 	public SynchronizedKeyWord() {
 		super(new HashMap<>());
 	}
-	
+
 	@Override
 	synchronized public void addWord(String w) {
 		if (this.getDictionary() != null) {
