@@ -9,12 +9,14 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.IntStream;
 
 public class MagicSquare {
 
 	private int[] square;
 	private int center;
 	private int size;
+	// private Set<Integer> container = new HashSet<>();
 
 	public MagicSquare() {
 
@@ -29,12 +31,14 @@ public class MagicSquare {
 		MagicSquare newMagic = new MagicSquare(size);
 		newMagic.square = square;
 		newMagic.setCenter(center);
+		// newMagic.container = new HashSet<>(this.container);
 		return newMagic;
 	}
 
 	public MagicSquare newInstance(int[] square) {
 		MagicSquare newMagic = new MagicSquare(size);
 		newMagic.square = square;
+		// newMagic.container = new HashSet<>(this.container);
 		return newMagic;
 	}
 
@@ -100,7 +104,20 @@ public class MagicSquare {
 		for (int j = 0; j < size; j++) {
 			square[r + c] = v[j];
 			r += size;
+			// container.add(v[j]);
 		}
+	}
+
+	public boolean colIsSet(int i) {
+		int r = 0;
+		for (int j = 0; j < size; j++) {
+			if (square[r + i] != 0) {
+				r += size;
+			} else {
+				return false;
+			}
+		}
+		return true;
 	}
 
 	public void setMinorDiagonal(int[] diagonal) {
@@ -210,6 +227,7 @@ public class MagicSquare {
 
 		for (int j = 0; j < size; j++) {
 			square[j + r] = v[j];
+			// container.add(v[j]);
 		}
 	}
 
@@ -259,6 +277,17 @@ public class MagicSquare {
 
 	public int getSize() {
 		return size;
+	}
+
+	public boolean notConflictWithVector(int[] vectorKey) {
+		for (int i = 1; i < vectorKey.length; i++) {
+			for(int sq : square) {
+				if(sq == vectorKey[i]) {
+					return false;
+				}
+			}
+		}
+		return true;
 	}
 
 }

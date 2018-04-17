@@ -15,41 +15,47 @@ public class MagicSquareMethod2 implements Runnable {
 	private static final int S_SIZE = 5;
 	private static Integer[] a = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23,
 			24, 25 };
-	static int SIZE = 41820;
+	static int SIZE = 2500; // 41820;
+	static int THREADS = 4;
+	static int partNumber = 1;
 	private static final Set<Integer> valueSet = new HashSet<>(Arrays.asList(a));
 
-	private static Map<Integer, List<int[]>> row1 = new HashMap<>();
-	private static Set<int[]> setOfRow1 = new HashSet<>();
+	// private static Map<Integer, List<int[]>> row1 = new HashMap<>();
+	// private static Set<int[]> setOfRow1 = new HashSet<>();
 	private static Set<MagicSquare> squares = new HashSet<>();
+	private static Set<MagicSquare> finalResult = new HashSet<>();
 	// private static Map<String, int[]> vectorsCache = new HashMap<>();
 	private static Map<Integer, Map<int[], int[]>> vectorsCache = new HashMap<>();
 	private static List<MagicSquare> mss;
-	private int part;
+	private int partOfPartition;
 	private int index;
+	private static int totalSquaresCounter = 0;
 
 	public MagicSquareMethod2(int p, int index) {
-		this.part = p;
+		this.partOfPartition = p;
 		this.index = index;
 	}
 
 	public static void main(String[] args) throws InterruptedException, IOException {
 		// TODO Auto-generated method stub
-		 MagicSquare m = new MagicSquare(5);
-		 m.setRow(1, new int[] { 1, 2, 3, 4, 5 });
-//		 m.setRow(1, new int[] { 6, 7, 8, 9, 10 });
-//		 m.setRow(2, new int[] { 11, 12, 13, 14, 15 });
-//		 m.setRow(3, new int[] { 1, 2, 3, 4, 5 });
-		// m.setRow(4, new int[] { 1, 2, 3, 4, 5 });
-		// m.setCol(0, new int[] { 8, 8, 8, 8, 8 });
-		 m.print();
-		 Set<MagicSquare> test = new HashSet<>();
-		 test.add(m);
-		 m.writeInFile("Z:\\test.txt", test);
+		// MagicSquare m = new MagicSquare(5);
+		// m.setRow(1, new int[] { 1, 2, 3, 4, 5 });
+		// m.setCol(0, new int[] {2, 3, 0, 5, 6});
+		// System.out.println(m.colIsSet(0));
+		// // m.setRow(1, new int[] { 6, 7, 8, 9, 10 });
+		// // m.setRow(2, new int[] { 11, 12, 13, 14, 15 });
+		// // m.setRow(3, new int[] { 1, 2, 3, 4, 5 });
+		// // m.setRow(4, new int[] { 1, 2, 3, 4, 5 });
+		// // m.setCol(0, new int[] { 8, 8, 8, 8, 8 });
+		// m.print();
+		// Set<MagicSquare> test = new HashSet<>();
+		// test.add(m);
+		// m.writeInFile("Z:\\test.txt", test);
 		long startTime = System.nanoTime();
 		long endTime = 0;
 		long duration = 0;
 		Set<int[]> possibleVectors = generatePossibleVectors(valueSet, 5);
-		for(int i : a) {
+		for (int i : a) {
 			vectorsCache.put(i, new HashMap<>());
 		}
 
@@ -61,47 +67,134 @@ public class MagicSquareMethod2 implements Runnable {
 			// }
 			// s = s.trim();
 			// vectorsCache.put(s, v);
-			
+
 			vectorsCache.get(v[0]).put(v, v);
 			MagicSquare ms = new MagicSquare(S_SIZE);
 			ms.setRow(0, v);
 			squares.add(ms);
 		}
-		
-		int av = 0;
-		for(int k : vectorsCache.keySet()) {
-			for(int[] v : vectorsCache.get(k).keySet()) {
-				//System.out.println(Arrays.toString(v));
-				av++;
-			}
-		}
-		System.out.println("Actual vectors " + av);
+
 		mss = new ArrayList<>(squares);
 
-		for (int index = 0; index < 5; index++) {
-			Thread[] ts = new Thread[4];
-			for (int i = 0; i < 4; i++) {
-				Thread t = new Thread(new MagicSquareMethod2(i, index));
-				ts[i] = t;
-				t.start();
+		/*
+		 * 167 280
+		 */
+		int totalSquares = squares.size();
+		// 10k
+		int partition = SIZE * THREADS;
+		int lastIndex = 0;
+		long lastValOfTime = 0;
+		while (true) {
+			for (int columnNumber = 0; columnNumber < 5; columnNumber++) {
+				Thread[] ts = new Thread[THREADS];
+				for (int i = 0; i < THREADS; i++) {
+					Thread t = new Thread(new MagicSquareMethod2(i, columnNumber));
+					ts[i] = t;
+					t.start();
+				}
+
+				for (Thread t : ts) {
+					t.join();
+				}
 			}
-
-			for (Thread t : ts) {
-				t.join();
+			endTime = System.nanoTime();
+			duration = endTime - startTime;
+			System.out.println("Iteration : " + (double) (duration - lastValOfTime) / 1000000000.0);
+			lastValOfTime = duration;
+			Set<MagicSquare> partOfFinal = new HashSet<>();
+			int c = 0;
+			
+			for(MagicSquare m : finalResult) {
+				if(c > lastIndex) {
+					partOfFinal.add(m);
+				}
+				c++;
 			}
-
-			long e = System.nanoTime();
-			long d = e - startTime;
-
-			System.out.println("Column i = " + index + " finished in Seconds: " + (double) d / 1000000000.0);
-
+			lastIndex = c;
+			MagicSquare.writeInFile("z://" + partNumber + ".txt", new HashSet<>(partOfFinal));//finalResult
+			//finalResult = new HashSet<>();
+			partNumber++;
+			if (totalSquares - partition * partNumber < partition) {
+				break;
+			}
+			totalSquaresCounter = finalResult.size();
 		}
-
 		endTime = System.nanoTime();
 		duration = endTime - startTime;
 		System.out.println("Program finished in Seconds : " + (double) duration / 1000000000.0);
 		System.out.println("Squares : " + squares.size());
 
+	}
+
+	private void fillColumn(int index) {
+		// 41820
+		long startTime = 0;
+		// int c = 0;
+		int start = (SIZE * partNumber / THREADS) * partOfPartition;
+		int end = (SIZE * partNumber / THREADS) + start;
+//		System.out.println("Thread : " + Thread.currentThread().getName() + " got start index: " + start
+//				+ " and end index: " + end);
+		Set<MagicSquare> partitionSquareSet = new LinkedHashSet<>(mss.subList(start, end));
+		Set<MagicSquare> goodSquaresWithChanges = new HashSet<>();
+		for (MagicSquare ms : partitionSquareSet) {
+			// c++;
+			startTime = System.nanoTime();
+
+			for (int k : vectorsCache.keySet()) {
+				int[] a = ms.getRow(0);
+
+				int[] col0 = ms.getCol(0);
+				int[] col1 = ms.getCol(1);
+				int[] col2 = ms.getCol(2);
+				int[] col3 = ms.getCol(3);
+				int[] col4 = ms.getCol(4);
+				if (k == a[index]) {
+					for (int[] vectorKey : vectorsCache.get(k).keySet()) {
+
+						if (!a.equals(vectorKey) && !col0.equals(vectorKey) && !col1.equals(vectorKey)
+								&& !col2.equals(vectorKey) && !col3.equals(vectorKey) && !col4.equals(vectorKey)) {
+							// if (index == 88) {
+							// System.out.println("1 - " + Arrays.toString(col0));
+							// System.out.println("2 - " + Arrays.toString(vectorKey));
+							// }
+							if (ms.notConflictWithVector(vectorKey)) {
+
+								MagicSquare ms2 = ms.newInstance(ms.getSquare());
+								ms2.setCol(index, vectorKey);
+								// addSquare(ms2);
+								// if(ms2.colIsSet(index)) {
+								goodSquaresWithChanges.add(ms2);
+								// if (index == 1) {
+								// ms2.print();
+								// }
+								// }
+							}
+						}
+					}
+				}
+			}
+
+			long endTime = System.nanoTime();
+			long duration = endTime - startTime;
+
+			// System.err.println(Thread.currentThread().getName() + " -> ms " + c + " of
+			// 41820; Seconds : "
+			// + (double) duration / 1000000000.0);
+
+		}
+//		System.out.println("Removed : " + partitionSquareSet.size());
+//		// remove old squares from this part
+//		removeAll(partitionSquareSet);
+//		System.out.println("Added : " + goodSquaresWithChanges.size());
+		// add new good squares
+		// addAll(goodSquaresWithChanges);
+		if (index == 4) {
+			for (MagicSquare m : goodSquaresWithChanges) {
+				// m.print();
+				// finalResult.add(m);
+				addFinal(m);
+			}
+		}
 	}
 
 	private static Set<int[]> generatePossibleVectors(Set<Integer> values, int subSetSize) {
@@ -156,57 +249,23 @@ public class MagicSquareMethod2 implements Runnable {
 	synchronized private void addSquare(MagicSquare ms) {
 		squares.add(ms);
 	}
-	synchronized private void addSquareSet(Set<MagicSquare> ms) {
-		squares.addAll(ms);
+
+	synchronized private void removeAll(Set<MagicSquare> ms) {
+		// squares.removeAll(ms);
+		for (MagicSquare m : ms) {
+			squares.remove(m);
+		}
 	}
 
-	private void fillColumn(int index) {
-		// 41820
-		long startTime = 0;
-		int c = 0;
-		int b = SIZE * part;
-		int e = SIZE + b;
-		Set<MagicSquare> sub = new LinkedHashSet<>(mss.subList(b, e));
-		Set<MagicSquare> setOfFilledMs = new HashSet<>();
-		//do we need this??
-		//Map<Integer, Map<int[], int[]>> copy = new HashMap<>(vectorsCache);
-		for (MagicSquare ms : sub) {
-			c++;
-			startTime = System.nanoTime();
-			// for each ms get vectors that begins with ms.getRow.firstChar
-			// copy ms and set new vector as a column
-			
-			for(int k : vectorsCache.keySet()) {
-				int[] a = ms.getRow(0);
-				if (k == a[0]) {
-					for(int[] vectorKey : vectorsCache.get(k).keySet()) {						
-						if (!a.equals(vectorKey)) {
-							MagicSquare ms2 = ms.newInstance(ms.getSquare());
-							ms2.setCol(0, vectorKey);
-							addSquare(ms2);
-							//setOfFilledMs.add(ms2);
-						}
-					}
-				}
-			}
-//			for (String k : vectorsCache.keySet()) {
-//				int[] a = ms.getRow(0);
-//				if (k.split(" ")[0].equals(String.valueOf(a[0]))) {
-//					if (!a.equals(vectorsCache.get(k))) {
-//						MagicSquare ms2 = ms.newInstance(ms.getSquare());
-//						ms2.setCol(0, vectorsCache.get(k));
-//						addSquare(ms2);
-//					}
-//				}
-//			}
-			long endTime = System.nanoTime();
-			long duration = endTime - startTime;
-			if (c % 10000 == 0) {
-				System.err.println(Thread.currentThread().getName() + " -> ms " + c + " of 41820; Seconds : "
-						+ (double) duration / 1000000000.0);
-			}
+	synchronized private void addAll(Set<MagicSquare> ms) {
+		for (MagicSquare m : ms) {
+			squares.add(m);
 		}
-		
-		//addSquareSet(setOfFilledMs);
+		// squares.addAll(new HashSet<>(ms));
 	}
+
+	synchronized void addFinal(MagicSquare m) {
+		finalResult.add(m);
+	}
+
 }
