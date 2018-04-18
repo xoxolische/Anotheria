@@ -269,7 +269,7 @@ public class MagicSquare {
 	 *            Set of magic squares
 	 * @throws IOException
 	 */
-	public static void writeInFile(String path, Set<MagicSquare> ms) throws IOException {
+	public static void writeInFile(String path, Collection<MagicSquare> ms) throws IOException {
 
 		BufferedWriter writer = new BufferedWriter(new FileWriter(path));
 		for (MagicSquare m : ms) {
