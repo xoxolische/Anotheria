@@ -10,7 +10,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.stream.IntStream;
 
 public class MagicSquare {
 
@@ -18,7 +17,6 @@ public class MagicSquare {
 	private int center;
 	private int size;
 	private int magicSum;
-	// private Set<Integer> container = new HashSet<>();
 
 	public MagicSquare() {
 
@@ -28,21 +26,6 @@ public class MagicSquare {
 		this.size = size;
 		this.square = new int[size * size];
 		setMagicSum();
-	}
-
-	public MagicSquare newInstance(int center, int[] square) {
-		MagicSquare newMagic = new MagicSquare(size);
-		newMagic.square = square;
-		newMagic.setCenter(center);
-		// newMagic.container = new HashSet<>(this.container);
-		return newMagic;
-	}
-
-	public MagicSquare newInstance(int[] square) {
-		MagicSquare newMagic = new MagicSquare(size);
-		newMagic.setSquare(square);
-		// newMagic.container = new HashSet<>(this.container);
-		return newMagic;
 	}
 
 	private void setMagicSum() {
@@ -56,33 +39,6 @@ public class MagicSquare {
 
 	public int getMagicSum() {
 		return magicSum;
-	}
-
-	public void setMainDiagonal(int[] diagonal) {
-		if (diagonal.length == 5) {
-			setMainDiagonalVector5(diagonal);
-		}
-		if (diagonal.length == 4) {
-			setMainDiagonalVector4(diagonal);
-		}
-	}
-
-	private void setMainDiagonalVector5(int[] diagonal) {
-		if (diagonal != null && diagonal.length == 5) {
-			for (int i = 0; i < diagonal.length; i++) {
-				square[i * 6] = diagonal[i];
-			}
-
-		}
-	}
-
-	private void setMainDiagonalVector4(int[] diagonal) {
-		if (diagonal != null && diagonal.length == 4) {
-			square[0] = diagonal[0];
-			square[6] = diagonal[1];
-			square[18] = diagonal[2];
-			square[24] = diagonal[3];
-		}
 	}
 
 	public int[] getRow(int i) {
@@ -102,15 +58,6 @@ public class MagicSquare {
 	}
 
 	public int[] getCol(int i) {
-		// int r = i;
-		// int[] col = new int[5];
-		// col[0] = square[0 + r];
-		// col[1] = square[5 + r];
-		// col[2] = square[10 + r];
-		// col[3] = square[15 + r];
-		// col[4] = square[20 + r];
-		// // System.out.println(Arrays.toString(row));
-
 		int[] column = new int[size];
 		int r = 0;
 		for (int j = 0; j < size; j++) {
@@ -129,37 +76,8 @@ public class MagicSquare {
 		}
 	}
 
-	public boolean colIsSet(int i) {
-		int r = 0;
-		for (int j = 0; j < size; j++) {
-			if (square[r + i] != 0) {
-				r += size;
-			} else {
-				return false;
-			}
-		}
-		return true;
-	}
-
-	/**
-	 * TODO
-	 * 
-	 * @return
-	 */
-	public boolean rowIsSet(int i) {
-		return true;
-	}
-
 	public void setMinorDiagonal(int[] diagonal) {
 		if (diagonal != null && diagonal.length == 4) {
-			// int c = 1;
-			// for (int i = 0; i < diagonal.length; i++) {
-			// square[4 * c] = diagonal[i];
-			// c++;
-			// }
-			// if (center != 0) {
-			// setCenter(center);
-			// }
 			square[4] = diagonal[0];
 			square[8] = diagonal[1];
 			square[16] = diagonal[2];
@@ -198,14 +116,6 @@ public class MagicSquare {
 			System.out.print(square[i] + " ");
 			c++;
 		}
-		// for (int i = 0; i < square.length; i++) {
-		// if (i != 0 && i % si == 0) {
-		// System.out.println();
-		// System.out.print(square[i] + " ");
-		// } else {
-		// System.out.print(square[i] + " ");
-		// }
-		// }
 		System.out.println();
 		System.out.println();
 	}
@@ -291,23 +201,6 @@ public class MagicSquare {
 		return size;
 	}
 
-	/**
-	 * THIS IS WRONG! Check if vector does not conflict with magic square
-	 * 
-	 * @param vectorKey
-	 * @return
-	 */
-	public boolean notConflictWithVector(int[] vectorKey) {
-		for (int i = 1; i < vectorKey.length; i++) {
-			for (int sq : square) {
-				if (sq == vectorKey[i]) {
-					return false;
-				}
-			}
-		}
-		return true;
-	}
-
 	public boolean noConflictsInMatrix() {
 		int vCounter = 0;
 		Set<Integer> s = new HashSet<>();
@@ -323,12 +216,6 @@ public class MagicSquare {
 		return true;
 	}
 
-	/**
-	 * TODO add diagonals check & 65 to class field Check if current magic square is
-	 * magical.
-	 * 
-	 * @return
-	 */
 	public boolean isMagic() {
 		for (int i = 0; i < size; i++) {
 			if (sum(this.getCol(i)) != magicSum) {

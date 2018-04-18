@@ -13,11 +13,11 @@ import magic.MagicSquare;
 import magic.Permutations;
 import magic.Subset;
 
-public class MagicFinder implements Runnable {
+public class MainMagicFinder implements Runnable {
 	private static final int SIZE = 4;
 
 	private static Map<Integer, List<int[]>> cache;
-	private static final int THREADS = 5;
+	private static final int THREADS = 4;
 	private static List<MagicSquare> magicSquareList;
 	private static List<MagicSquare> finalList = new LinkedList<>();
 
@@ -25,9 +25,9 @@ public class MagicFinder implements Runnable {
 	private List<MagicSquare> initialList;
 
 	private static int current = 0;
-	private static int step = 100;
+	private static int step = 50;
 
-	public MagicFinder(List<MagicSquare> ms) {
+	public MainMagicFinder(List<MagicSquare> ms) {
 		this.initialList = ms;
 	}
 
@@ -65,14 +65,13 @@ public class MagicFinder implements Runnable {
 		}
 		System.out.println("Before search : " + magicSquareList.size());
 		long startTime = System.nanoTime();
-		int c = 0;
 		boolean foo = true;
 		while (foo) {
 			Thread[] ts = new Thread[THREADS];
 			for (int i = 0; i < THREADS; i++) {
 				List<MagicSquare> m = getPartition(magicSquareList);
 				if (m != null) {
-					Thread t = new Thread(new MagicFinder(m));
+					Thread t = new Thread(new MainMagicFinder(m));
 					t.start();
 					ts[i] = t;
 					current += step;

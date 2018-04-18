@@ -114,21 +114,21 @@ public class Permutations {
 		arrBuf[secondCycleElement] = buf;
 	}
 
-	private void printArr(int[] arrHead, int[] arrTail) {
-		System.out.print(++counter + ": ");
-		if (arrHead != null && arrHead.length != 0) {
-			for (int item : arrHead) {
-				System.out.print(" " + item);
-			}
-		}
-		if (arrTail != null && arrTail.length != 0) {
-			for (int item : arrTail) {
-				System.out.print(" " + item);
-			}
-		}
-
-		System.out.println();
-	}
+//	private void printArr(int[] arrHead, int[] arrTail) {
+//		System.out.print(++counter + ": ");
+//		if (arrHead != null && arrHead.length != 0) {
+//			for (int item : arrHead) {
+//				System.out.print(" " + item);
+//			}
+//		}
+//		if (arrTail != null && arrTail.length != 0) {
+//			for (int item : arrTail) {
+//				System.out.print(" " + item);
+//			}
+//		}
+//
+//		System.out.println();
+//	}
 
 	private int[] concat(int[] arrHead, int[] arrTail) {
 		int[] res = null;
