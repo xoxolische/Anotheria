@@ -4,20 +4,23 @@ import concurrency.dictionary.Dictionary;
 
 /**
  * This class give opportunity to execute our dictionary in multiple threads.
+ * 
  * @author Nikita Pavlov
  *
  */
-public class Executor implements Runnable{
-	
+public class Executor implements Runnable {
+
 	private Dictionary dictionary;
+
 	/**
+	 * Constructor
 	 * 
-	 * @param d dictionary to execute
+	 * @param d
+	 *            dictionary to execute
 	 */
 	public Executor(Dictionary d) {
 		dictionary = d;
 	}
-
 
 	@Override
 	public void run() {
@@ -26,5 +29,5 @@ public class Executor implements Runnable{
 			dictionary.addWord(w[i]);
 		}
 	}
-	
+
 }

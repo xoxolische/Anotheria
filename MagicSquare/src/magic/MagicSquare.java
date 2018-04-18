@@ -70,41 +70,46 @@ public class MagicSquare {
 	}
 
 	public int[] getRow(int i) {
-		int r = i * 5;
-		int[] row = new int[5];
-		row[0] = square[0 + r];
-		row[1] = square[1 + r];
-		row[2] = square[2 + r];
-		row[3] = square[3 + r];
-		row[4] = square[4 + r];
-		// System.out.println(Arrays.toString(row));
+		int[] row = new int[size];
+		int r = size * i;
+		for (int j = 0; j < size; j++) {
+			row[j] = square[j + r];
+		}
 		return row;
 	}
 
+	public void setRow(int i, int[] v) {
+		int r = size * i;
+		for (int j = 0; j < size; j++) {
+			square[j + r] = v[j];
+		}
+	}
+
 	public int[] getCol(int i) {
-		int r = i;
-		int[] col = new int[5];
-		col[0] = square[0 + r];
-		col[1] = square[5 + r];
-		col[2] = square[10 + r];
-		col[3] = square[15 + r];
-		col[4] = square[20 + r];
-		// System.out.println(Arrays.toString(row));
-		return col;
+		// int r = i;
+		// int[] col = new int[5];
+		// col[0] = square[0 + r];
+		// col[1] = square[5 + r];
+		// col[2] = square[10 + r];
+		// col[3] = square[15 + r];
+		// col[4] = square[20 + r];
+		// // System.out.println(Arrays.toString(row));
+
+		int[] column = new int[size];
+		int r = 0;
+		for (int j = 0; j < size; j++) {
+			column[j] = square[r + i];
+			r += size;
+		}
+		return column;
 	}
 
 	public void setCol(int i, int[] v) {
 		int c = i;
 		int r = 0;
-		// square[0 + r] = v[0];
-		// square[5 + r] = v[1];
-		// square[10 + r] = v[2];
-		// square[15 + r] = v[3];
-		// square[20 + r] = v[4];
 		for (int j = 0; j < size; j++) {
 			square[r + c] = v[j];
 			r += size;
-			// container.add(v[j]);
 		}
 	}
 
@@ -117,6 +122,13 @@ public class MagicSquare {
 				return false;
 			}
 		}
+		return true;
+	}
+	/**
+	 * TODO
+	 * @return
+	 */
+	public boolean rowIsSet(int i) {
 		return true;
 	}
 
@@ -155,6 +167,9 @@ public class MagicSquare {
 		return false;
 	}
 
+	/**
+	 * Prints our magic square to console.
+	 */
 	public void print() {
 		for (int i = 0; i < square.length; i++) {
 			if (i != 0 && i % 5 == 0) {
@@ -168,6 +183,10 @@ public class MagicSquare {
 		System.out.println();
 	}
 
+	/**
+	 * 
+	 * @return List of magic square values
+	 */
 	public Collection<?> getCollection() {
 		List<Integer> set = new LinkedList<>();
 		int[] copy = Arrays.copyOf(square, square.length);
@@ -206,31 +225,6 @@ public class MagicSquare {
 		return square;
 	}
 
-	public boolean rowIsSet(int i) {
-		int r = 5 * i;
-		if (square[1 + r] != 0 && square[2 + r] != 0 && square[3 + r] != 0) {
-			return true;
-		}
-		return false;
-	}
-
-	public void setRow(int i, int[] v) {
-		int r = size * i;
-
-		// if (v != null && v.length == 5) {
-		// square[0 + r] = v[0];
-		// square[1 + r] = v[1];
-		// square[2 + r] = v[2];
-		// square[3 + r] = v[3];
-		// square[4 + r] = v[4];
-		// }
-
-		for (int j = 0; j < size; j++) {
-			square[j + r] = v[j];
-			// container.add(v[j]);
-		}
-	}
-
 	public void setCells(Map<Integer, Integer> m) {
 		for (Integer i : m.keySet()) {
 			square[i] = m.get(i);
@@ -248,6 +242,10 @@ public class MagicSquare {
 		return false;
 	}
 
+	/**
+	 * 
+	 * @return String representation of square
+	 */
 	public String squareToString() {
 		String s = "";
 		for (int i = 0; i < size; i++) {
@@ -257,6 +255,15 @@ public class MagicSquare {
 		return s;
 	}
 
+	/**
+	 * Saves squares to the file.
+	 * 
+	 * @param path
+	 *            - absolute path to file
+	 * @param ms
+	 *            Set of magic squares
+	 * @throws IOException
+	 */
 	public static void writeInFile(String path, Set<MagicSquare> ms) throws IOException {
 
 		BufferedWriter writer = new BufferedWriter(new FileWriter(path));
@@ -279,15 +286,47 @@ public class MagicSquare {
 		return size;
 	}
 
+	/**
+	 * Check if vector does not conflict with magic square
+	 * 
+	 * @param vectorKey
+	 * @return
+	 */
 	public boolean notConflictWithVector(int[] vectorKey) {
 		for (int i = 1; i < vectorKey.length; i++) {
-			for(int sq : square) {
-				if(sq == vectorKey[i]) {
+			for (int sq : square) {
+				if (sq == vectorKey[i]) {
 					return false;
 				}
 			}
 		}
 		return true;
+	}
+
+	/**
+	 * TODO add diagonals check & 65 to class field Check if current magic square is
+	 * magical.
+	 * 
+	 * @return
+	 */
+	public boolean isMagic() {
+		for (int i = 0; i < size; i++) {
+			if (sum(this.getCol(i)) != 65) {
+				return false;
+			}
+			if (sum(this.getRow(i)) != 65) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	private int sum(int[] a) {
+		int sum = 0;
+		for (int i : a) {
+			sum += i;
+		}
+		return sum;
 	}
 
 }

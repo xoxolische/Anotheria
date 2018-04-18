@@ -22,34 +22,18 @@ public class Board {
 		this.board = new int[size * size];
 	}
 
-	/**
-	 * 
-	 * @return array of int values that is our board
-	 */
 	public int[] getBoard() {
 		return board;
 	}
 
-	/**
-	 * 
-	 * @param board
-	 */
 	public void setBoard(int[] board) {
 		this.board = board;
 	}
 
-	/**
-	 * 
-	 * @return size of our board
-	 */
 	public int getSize() {
 		return size;
 	}
 
-	/**
-	 * 
-	 * @param size
-	 */
 	public void setSize(int size) {
 		this.size = size;
 	}

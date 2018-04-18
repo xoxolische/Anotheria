@@ -22,6 +22,10 @@ public final class LocalConnection {
 
 	}
 
+	/**
+	 * 
+	 * @return java.sql.Connection initialized with parameters for local connection to postgreSQL database
+	 */
 	public static Connection getConnection() {
 		try {
 			Class.forName("org.postgresql.Driver");

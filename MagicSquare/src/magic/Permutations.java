@@ -85,15 +85,6 @@ public class Permutations {
 		}
 
 	}
-
-	private int sumOfArray(int[] a) {
-		int s = 0;
-		for (int i : a) {
-			s += i;
-		}
-		return s;
-	}
-
 	private int[] decrementArr(int[] arr) {
 
 		int[] arrNext = new int[arr.length - 1];

@@ -43,10 +43,6 @@ public class Knight {
 		return copy;
 	}
 
-	/**
-	 * 
-	 * @return current position of Knight
-	 */
 	public Position getPosition() {
 		return p;
 	}
@@ -193,10 +189,6 @@ public class Knight {
 		return false;
 	}
 
-	/**
-	 * 
-	 * @return previous position
-	 */
 	public Position getLast() {
 		return previous;
 	}

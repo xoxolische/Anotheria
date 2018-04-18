@@ -7,6 +7,9 @@ import java.rmi.server.UnicastRemoteObject;
 
 /**
  * Class - server.
+ * <p>
+ * Implements Echo interface.
+ * 
  * @author Nikita Pavlov
  *
  */

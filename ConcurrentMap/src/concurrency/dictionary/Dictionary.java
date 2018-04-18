@@ -39,19 +39,10 @@ public class Dictionary {
 		}
 	}
 
-	/**
-	 * Getter for our dictionary Map
-	 * 
-	 * @return our dictionary
-	 */
 	public Map<String, String> getDictionary() {
 		return d;
 	}
 
-	/**
-	 * Getter for array of words from the file.
-	 * @return String[] with words
-	 */
 	public String[] getWords() {
 		return words;
 	}

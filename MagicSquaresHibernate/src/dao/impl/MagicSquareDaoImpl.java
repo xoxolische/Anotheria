@@ -3,7 +3,7 @@ package dao.impl;
 import model.MagicSquareHibernate;
 
 /**
- * Dao for MagicSquareHibernate entity
+ * Dao implementation for MagicSquareHibernate entity
  * @author Nikita Pavlov
  *
  */

@@ -14,6 +14,12 @@ import javax.ws.rs.core.Response;
 import dao.impl.MagicSquareDaoImpl;
 import model.MagicSquareHibernate;
 
+/**
+ * MagicSquare service implementation
+ * 
+ * @author Nikita Pavlov
+ *
+ */
 @Path("/ms")
 public class ServiceImpl implements Service<MagicSquareHibernate> {
 
@@ -27,7 +33,7 @@ public class ServiceImpl implements Service<MagicSquareHibernate> {
 		System.out.println("good!");
 		return Response.status(200).entity(entity.t).build();
 	}
-	
+
 	@POST
 	@Path("/create")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -61,13 +67,12 @@ public class ServiceImpl implements Service<MagicSquareHibernate> {
 		dao.delete(id);
 		return Response.status(200).entity(null).build();
 	}
-	
+
 	@GET
 	@Path("/getAll")
 	public Response getAll() {
 		dao.getAll();
 		return Response.status(200).entity(null).build();
 	}
-		
 
 }

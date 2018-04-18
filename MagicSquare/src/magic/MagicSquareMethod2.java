@@ -3,6 +3,7 @@ package magic;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
@@ -37,6 +38,11 @@ public class MagicSquareMethod2 implements Runnable {
 	}
 
 	public static void main(String[] args) throws InterruptedException, IOException {
+
+		solve();
+	}
+
+	public static void solve() throws InterruptedException, IOException {
 		// TODO Auto-generated method stub
 		// MagicSquare m = new MagicSquare(5);
 		// m.setRow(1, new int[] { 1, 2, 3, 4, 5 });
@@ -99,42 +105,89 @@ public class MagicSquareMethod2 implements Runnable {
 			}
 			endTime = System.nanoTime();
 			duration = endTime - startTime;
-			System.out.println("Iteration : " + (double) (duration - lastValOfTime) / 1000000000.0);
+			System.out.println("Iteration " + partNumber + " : " + (double) (duration - lastValOfTime) / 1000000000.0);
 			lastValOfTime = duration;
 			Set<MagicSquare> partOfFinal = new HashSet<>();
 			int c = 0;
-			
-			for(MagicSquare m : finalResult) {
-				if(c > lastIndex) {
-					partOfFinal.add(m);
-				}
-				c++;
-			}
+
+			// for(MagicSquare m : finalResult) {
+			// if(c > lastIndex) {
+			// partOfFinal.add(m);
+			// }
+			// c++;
+			// }
 			lastIndex = c;
-			MagicSquare.writeInFile("z://" + partNumber + ".txt", new HashSet<>(partOfFinal));//finalResult
-			//finalResult = new HashSet<>();
-			partNumber++;
+			if (partNumber == 16)
+				MagicSquare.writeInFile("z://" + partNumber + ".txt", new HashSet<>(finalResult));// finalResult or
+																									// partOFFinal
+			// finalResult = new HashSet<>();
 			if (totalSquares - partition * partNumber < partition) {
 				break;
 			}
-			totalSquaresCounter = finalResult.size();
+			partNumber++;
+			// totalSquaresCounter = finalResult.size();
 		}
+		System.out.println("Square basises done! Started permutation for rows.");
+		permutateSquares();
+		
+		MagicSquare.writeInFile("z://final.txt", new HashSet<>(finalResult));
 		endTime = System.nanoTime();
 		duration = endTime - startTime;
+
 		System.out.println("Program finished in Seconds : " + (double) duration / 1000000000.0);
 		System.out.println("Squares : " + squares.size());
+		System.out.println("Total finished squares : " + finalResult.size());
+	}
 
+	private static void permutateSquares() {
+		Permutations p = new Permutations();
+		p.permutates(new int[] { 0, 1, 2, 3, 4 });
+		// for (int[] a : p.permutationsList) {
+		// System.out.println(Arrays.toString(a));
+		// }
+		List<int[]> permutationIndexes = new ArrayList<>(p.permutationsList);
+		Set<MagicSquare> permutationsOfRows = new HashSet<>();
+		int c = 0;
+		long start = System.nanoTime();
+		for (MagicSquare m : finalResult) {
+			if (c >= 100) {
+				break;
+			}
+			for (int i = 1; i < permutationIndexes.size(); i++) {
+				permutationsOfRows.add(swaper(m, permutationIndexes.get(i)));
+			}
+			c++;
+		}
+
+		long end = System.nanoTime();
+		long duration = end - start;
+		
+		System.out.println("Permutation of 120/"+finalResult.size()+" squares finished in Seconds : " + (double) duration / 1000000000.0);
+		for (MagicSquare m : permutationsOfRows) {
+			finalResult.add(m);
+		}
+	}
+
+	private static MagicSquare swaper(MagicSquare m, int[] indexMapper) {
+		MagicSquare newMagic = new MagicSquare(m.getSize());
+		for (int i = 0; i < indexMapper.length; i++) {
+			newMagic.setRow(i, m.getRow(indexMapper[i]));
+		}
+		return newMagic;
 	}
 
 	private void fillColumn(int index) {
 		// 41820
 		long startTime = 0;
 		// int c = 0;
-		int start = (SIZE * partNumber / THREADS) * partOfPartition;
-		int end = (SIZE * partNumber / THREADS) + start;
-//		System.out.println("Thread : " + Thread.currentThread().getName() + " got start index: " + start
-//				+ " and end index: " + end);
-		Set<MagicSquare> partitionSquareSet = new LinkedHashSet<>(mss.subList(start, end));
+		int start = 10000 * partNumber - SIZE * partOfPartition;
+		int end = start - SIZE;
+		// System.out.println("Start : " + start + " End : " + end + "p = "+
+		// partNumber);
+		// System.out.println("Thread : " + Thread.currentThread().getName() + " got
+		// start index: " + start
+		// + " and end index: " + end);
+		Set<MagicSquare> partitionSquareSet = new LinkedHashSet<>(mss.subList(end, start));
 		Set<MagicSquare> goodSquaresWithChanges = new HashSet<>();
 		for (MagicSquare ms : partitionSquareSet) {
 			// c++;
@@ -149,7 +202,7 @@ public class MagicSquareMethod2 implements Runnable {
 				int[] col3 = ms.getCol(3);
 				int[] col4 = ms.getCol(4);
 				if (k == a[index]) {
-					for (int[] vectorKey : vectorsCache.get(k).keySet()) {
+					for (int[] vectorKey : vectorsCache.get(k).values()) {
 
 						if (!a.equals(vectorKey) && !col0.equals(vectorKey) && !col1.equals(vectorKey)
 								&& !col2.equals(vectorKey) && !col3.equals(vectorKey) && !col4.equals(vectorKey)) {
@@ -162,8 +215,13 @@ public class MagicSquareMethod2 implements Runnable {
 								MagicSquare ms2 = ms.newInstance(ms.getSquare());
 								ms2.setCol(index, vectorKey);
 								// addSquare(ms2);
-								// if(ms2.colIsSet(index)) {
-								goodSquaresWithChanges.add(ms2);
+								//if(index == 4 ) {
+								//if (ms2.isMagic()) {
+									goodSquaresWithChanges.add(ms2);
+								//}
+//								}else {
+//									goodSquaresWithChanges.add(ms2);									
+//								}
 								// if (index == 1) {
 								// ms2.print();
 								// }
@@ -182,19 +240,19 @@ public class MagicSquareMethod2 implements Runnable {
 			// + (double) duration / 1000000000.0);
 
 		}
-//		System.out.println("Removed : " + partitionSquareSet.size());
-//		// remove old squares from this part
-//		removeAll(partitionSquareSet);
-//		System.out.println("Added : " + goodSquaresWithChanges.size());
+		// System.out.println("Removed : " + partitionSquareSet.size());
+		// // remove old squares from this part
+		// removeAll(partitionSquareSet);
+		// System.out.println("Added : " + goodSquaresWithChanges.size());
 		// add new good squares
 		// addAll(goodSquaresWithChanges);
-		if (index == 4) {
+		//if (index == 4) {
 			for (MagicSquare m : goodSquaresWithChanges) {
 				// m.print();
 				// finalResult.add(m);
 				addFinal(m);
 			}
-		}
+		//}
 	}
 
 	private static Set<int[]> generatePossibleVectors(Set<Integer> values, int subSetSize) {
