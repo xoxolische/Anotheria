@@ -1,8 +1,6 @@
 package advanced;
 
-import java.io.BufferedInputStream;
 import java.io.BufferedReader;
-import java.io.DataInputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -14,16 +12,19 @@ import java.io.OutputStream;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.List;
 
 import advanced.commands.DIRCommand;
 import advanced.commands.GETCommand;
 import advanced.commands.ICommand;
 import advanced.commands.PUTCommand;
-import advanced.transfer.DataTransfer;
 
+/**
+ * Client side
+ * 
+ * @author Nikita Pavlov
+ *
+ */
 public class Client {
 
 	private Socket commandSocket;
@@ -33,6 +34,15 @@ public class Client {
 	private InputStream fileInput;
 	private OutputStream fileOutput;
 
+	/**
+	 * 
+	 * @param address
+	 *            of socket
+	 * @param commandPort
+	 *            port of command socket
+	 * @param filePort
+	 *            port of file socket
+	 */
 	public Client(String address, int commandPort, int filePort) {
 		try {
 			commandSocket = new Socket(InetAddress.getByName(address), commandPort);
@@ -49,6 +59,12 @@ public class Client {
 		}
 	}
 
+	/**
+	 * Send the command
+	 * 
+	 * @param cmd
+	 *            command to send
+	 */
 	public void cmd(String cmd) {
 		try {
 			commandOutput.writeObject(cmd);
@@ -58,6 +74,11 @@ public class Client {
 		}
 	}
 
+	/**
+	 * Receive response
+	 * 
+	 * @return Object given by server
+	 */
 	public Object recieve() {
 		try {
 			return commandInput.readObject();
@@ -68,6 +89,11 @@ public class Client {
 
 	}
 
+	/**
+	 * Wait for file
+	 * 
+	 * @param fileName
+	 */
 	public void recieveFile(String fileName) {
 		try {
 			FileOutputStream fos = new FileOutputStream("Z:\\" + fileName);
@@ -83,6 +109,11 @@ public class Client {
 		}
 	}
 
+	/**
+	 * Send file to the server
+	 * 
+	 * @param fileName
+	 */
 	private void sendFile(String fileName) {
 		File f = new File("Z:\\" + fileName);
 		if (f != null) {
@@ -96,6 +127,11 @@ public class Client {
 		}
 	}
 
+	/**
+	 * Start our client
+	 * 
+	 * @param args
+	 */
 	public static void main(String[] args) {
 		ICommand[] commands = { new DIRCommand(null), new GETCommand(null), new PUTCommand(null) };
 		Client c = new Client("127.0.0.1", 1234, 1235);

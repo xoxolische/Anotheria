@@ -9,6 +9,12 @@ import advanced.commands.ICommand;
 import advanced.commands.PUTCommand;
 import advanced.transfer.DataTransfer;
 
+/**
+ * This class separates clients from each other.
+ * 
+ * @author Nikita Pavlov
+ *
+ */
 public class Connection implements Runnable {
 
 	private Socket clientCommandSocket;
@@ -19,22 +25,21 @@ public class Connection implements Runnable {
 	private InputStream fileInput;
 	private OutputStream fileOutput;
 
+	/**
+	 * 
+	 * @param clientCommandSocket
+	 * @param clientFileSocket
+	 * @param server
+	 */
 	public Connection(Socket clientCommandSocket, Socket clientFileSocket, Server server) {
-		//server.dir();
 		this.clientCommandSocket = clientCommandSocket;
 		this.clientFileSocket = clientFileSocket;
 		this.server = server;
 		try {
-			// System.out.println("1");
 			commandOutput = new ObjectOutputStream(clientCommandSocket.getOutputStream());
-			// System.out.println("2");
 			commandInput = new ObjectInputStream(clientCommandSocket.getInputStream());
-			// System.out.println("3");
-
 			fileInput = clientFileSocket.getInputStream();
-			// System.out.println("4");
 			fileOutput = clientFileSocket.getOutputStream();
-			// System.out.println("5");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -48,10 +53,10 @@ public class Connection implements Runnable {
 				String cmd = (String) commandInput.readObject();
 				if (cmd != null) {
 					for (ICommand c : commands) {
-						if(c.isCommand(cmd)) {
+						if (c.isCommand(cmd)) {
 							DataTransfer dt = new DataTransfer(c.execute(fileInput), commandOutput, fileOutput);
 							dt.send();
-						}							
+						}
 					}
 				}
 			} catch (ClassNotFoundException | IOException e) {

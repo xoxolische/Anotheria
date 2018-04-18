@@ -6,12 +6,22 @@ import java.util.regex.Pattern;
 
 import advanced.Server;
 
+/**
+ * Class for GET command
+ * 
+ * @author Nikita Pavlov
+ *
+ */
 public class GETCommand extends Command {
 
 	private Pattern p;
 	private Server server;
 	private String memo;
 
+	/**
+	 * 
+	 * @param server entity
+	 */
 	public GETCommand(Server server) {
 		p = Pattern.compile("[G][E][T][\\s].{1,255}");
 		this.server = server;

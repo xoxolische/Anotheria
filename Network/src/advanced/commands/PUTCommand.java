@@ -1,18 +1,28 @@
 package advanced.commands;
 
-import java.io.File;
 import java.io.InputStream;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import advanced.Server;
 
+/**
+ * Class for PUT command
+ * 
+ * @author Nikita Pavlov
+ *
+ */
 public class PUTCommand extends Command {
 
 	private Pattern p;
 	private Server server;
 	private String file;
 
+	/**
+	 * 
+	 * @param server
+	 *            entity
+	 */
 	public PUTCommand(Server server) {
 		p = Pattern.compile("[P][U][T][\\s].{1,255}");
 		this.server = server;

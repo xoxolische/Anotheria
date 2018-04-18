@@ -13,6 +13,36 @@ import magic.MagicSquare;
 import magic.Permutations;
 import magic.Subset;
 
+/**
+ * This class implements search of magic squares for given size in multiple
+ * threads.
+ * <p>
+ * Main idea of method to separate big amount of data into smaller pieces and
+ * make permutations of recieved data.
+ * <p>
+ * We begin with setting the size N of our MagicSquare entity. Then, we fill the
+ * set of possible values for this case. I.e we have a set filled with integers
+ * {1..n^2}
+ * <p>
+ * Then, we search for subsets of our set. Subset size equals N, also subset sum
+ * must be equals to our magic sum. Then, we do permutations of those vectors.
+ * After these manipulations, foreach vector we have create new MagicSquare, set
+ * 0 row with given vector and store it in the List. Now we have our basic
+ * object list. Also, we store our "Magic Vectors" (MV) in HashMap in format K -
+ * 1st number of MV, V - List<MV>. So we can get all MV that begin with
+ * specified number.
+ * <p>
+ * Now we take a portion of MagicSquares and foreach column take 1st column
+ * number (already set with previous step and belongs to 0 row of our MS) we
+ * take List of MV from map. Place it and check if there no duplicate values in
+ * matrix. Then we check each row if it`s less than Magic Sum.
+ * <p>
+ * Repeat until we face last column. Foreach last column we set it to MS and
+ * check if it is magical and save in case true.
+ * 
+ * @author Nikita Pavlov
+ *
+ */
 public class MainMagicFinder implements Runnable {
 	private static final int SIZE = 4;
 

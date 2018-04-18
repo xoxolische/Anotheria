@@ -9,11 +9,24 @@ import java.net.Socket;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * Server side
+ * 
+ * @author Nikita Pavlov
+ *
+ */
 public class Server {
 
 	private ServerSocket commandTransfer;
 	private ServerSocket fileTransfer;
 
+	/**
+	 * 
+	 * @param commandPort
+	 *            port for command socket
+	 * @param filePort
+	 *            port for file socket
+	 */
 	public Server(int commandPort, int filePort) {
 		try {
 			commandTransfer = new ServerSocket(commandPort);
@@ -23,6 +36,10 @@ public class Server {
 		}
 	}
 
+	/**
+	 * 
+	 * @return list of files in server share directory
+	 */
 	public List<String> dir() {
 		File folder = new File(".");
 		File[] listOfFiles = folder.listFiles();
@@ -33,10 +50,18 @@ public class Server {
 				// System.out.println(f.getName());
 			}
 		}
-		//System.out.println("DIR called!");
+		// System.out.println("DIR called!");
 		return listToUser;
 	}
 
+	/**
+	 * 
+	 * @param fileName
+	 *            file name to save
+	 * @param fileInput
+	 *            stream to save
+	 * @return null
+	 */
 	public Object put(String fileName, InputStream fileInput) {
 		try {
 			FileOutputStream fos = new FileOutputStream(fileName);
@@ -52,12 +77,21 @@ public class Server {
 		return null;
 	}
 
+	/**
+	 * 
+	 * @param fileName
+	 *            to get from server
+	 * @return file
+	 */
 	public File get(String fileName) {
 		File f = new File(fileName);
-		//System.out.println(f.getName() + " " + f.getAbsolutePath());
+		// System.out.println(f.getName() + " " + f.getAbsolutePath());
 		return f;
 	}
 
+	/**
+	 * Start our server
+	 */
 	public void start() {
 		while (true) {
 			try {
