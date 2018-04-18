@@ -5,6 +5,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -16,6 +17,7 @@ public class MagicSquare {
 	private int[] square;
 	private int center;
 	private int size;
+	private int magicSum;
 	// private Set<Integer> container = new HashSet<>();
 
 	public MagicSquare() {
@@ -24,7 +26,8 @@ public class MagicSquare {
 
 	public MagicSquare(int size) {
 		this.size = size;
-		square = new int[size * size];
+		this.square = new int[size * size];
+		setMagicSum();
 	}
 
 	public MagicSquare newInstance(int center, int[] square) {
@@ -37,9 +40,22 @@ public class MagicSquare {
 
 	public MagicSquare newInstance(int[] square) {
 		MagicSquare newMagic = new MagicSquare(size);
-		newMagic.square = square;
+		newMagic.setSquare(square);
 		// newMagic.container = new HashSet<>(this.container);
 		return newMagic;
+	}
+
+	private void setMagicSum() {
+		int m = size * (size * size + 1) / 2;
+		this.magicSum = m;
+	}
+
+	public void setSquare(int[] square) {
+		this.square = square;
+	}
+
+	public int getMagicSum() {
+		return magicSum;
 	}
 
 	public void setMainDiagonal(int[] diagonal) {
@@ -124,8 +140,10 @@ public class MagicSquare {
 		}
 		return true;
 	}
+
 	/**
 	 * TODO
+	 * 
 	 * @return
 	 */
 	public boolean rowIsSet(int i) {
@@ -171,14 +189,23 @@ public class MagicSquare {
 	 * Prints our magic square to console.
 	 */
 	public void print() {
+		int c = 0;
 		for (int i = 0; i < square.length; i++) {
-			if (i != 0 && i % 5 == 0) {
+			if (c == size) {
+				c = 0;
 				System.out.println();
-				System.out.print(square[i] + "  ");
-			} else {
-				System.out.print(square[i] + "  ");
 			}
+			System.out.print(square[i] + " ");
+			c++;
 		}
+		// for (int i = 0; i < square.length; i++) {
+		// if (i != 0 && i % si == 0) {
+		// System.out.println();
+		// System.out.print(square[i] + " ");
+		// } else {
+		// System.out.print(square[i] + " ");
+		// }
+		// }
 		System.out.println();
 		System.out.println();
 	}
@@ -197,28 +224,6 @@ public class MagicSquare {
 			}
 		}
 		return set;
-	}
-
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + Arrays.hashCode(square);
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		MagicSquare other = (MagicSquare) obj;
-		if (!Arrays.equals(square, other.square))
-			return false;
-		return true;
 	}
 
 	public int[] getSquare() {
@@ -287,7 +292,7 @@ public class MagicSquare {
 	}
 
 	/**
-	 * Check if vector does not conflict with magic square
+	 * THIS IS WRONG! Check if vector does not conflict with magic square
 	 * 
 	 * @param vectorKey
 	 * @return
@@ -303,6 +308,21 @@ public class MagicSquare {
 		return true;
 	}
 
+	public boolean noConflictsInMatrix() {
+		int vCounter = 0;
+		Set<Integer> s = new HashSet<>();
+		for (int v : square) {
+			if (v != 0) {
+				s.add(v);
+				vCounter++;
+			}
+		}
+		if (vCounter != s.size()) {
+			return false;
+		}
+		return true;
+	}
+
 	/**
 	 * TODO add diagonals check & 65 to class field Check if current magic square is
 	 * magical.
@@ -311,22 +331,74 @@ public class MagicSquare {
 	 */
 	public boolean isMagic() {
 		for (int i = 0; i < size; i++) {
-			if (sum(this.getCol(i)) != 65) {
+			if (sum(this.getCol(i)) != magicSum) {
 				return false;
 			}
-			if (sum(this.getRow(i)) != 65) {
+			if (sum(this.getRow(i)) != magicSum) {
 				return false;
 			}
+			if (sum(this.getDiagonal1()) != magicSum) {
+				return false;
+			}
+			if (sum(this.getDiagonal2()) != magicSum) {
+				return false;
+			}
+
 		}
 		return true;
 	}
 
-	private int sum(int[] a) {
+	public int[] getDiagonal1() {
+		int[] d = new int[size];
+		for (int i = 0; i < size; i++) {
+			d[i] = square[i * (size + 1)];
+		}
+		return d;
+	}
+
+	public int[] getDiagonal2() {
+		int[] d = new int[size];
+		for (int i = 0; i < size; i++) {
+			d[i] = square[(size - 1) + i * (size - 1)];
+		}
+		return d;
+	}
+
+	/**
+	 * 
+	 * @param a
+	 *            - array to sum up
+	 * @return sum of array values
+	 */
+	public int sum(int[] a) {
 		int sum = 0;
 		for (int i : a) {
 			sum += i;
 		}
+		// System.out.println(Arrays.toString(a) + " => " + sum);
 		return sum;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + Arrays.hashCode(square);
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		MagicSquare other = (MagicSquare) obj;
+		if (!Arrays.equals(square, other.square))
+			return false;
+		return true;
 	}
 
 }

@@ -4,9 +4,9 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
-class Subset {
+public class Subset {
 
-	Set<int[]> subsets;
+	public Set<int[]> subsets;
 
 	public Subset() {
 		subsets = new HashSet<>();
@@ -46,7 +46,13 @@ class Subset {
 	// The main function that prints all combinations
 	// of size r in arr[] of size n. This function
 	// mainly uses combinationUtil()
-	void generateSubsets(int arr[], int n, int r) {
+	/**
+	 * Generates subsets given int array
+	 * @param arr - set of values
+	 * @param n - size of array
+	 * @param r - size of subset array
+	 */
+	public void generateSubsets(int arr[], int n, int r) {
 		// A temporary array to store all combination
 		// one by one
 		int data[] = new int[r];
