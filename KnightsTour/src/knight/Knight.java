@@ -14,6 +14,7 @@ public class Knight {
 	private Position p;
 	private List<Position> positions;
 	private Position previous;
+	public Position memo;
 
 	/**
 	 * Constructor with coordinates. X and Y as parameters start with 0.
@@ -174,16 +175,13 @@ public class Knight {
 	}
 
 	/**
-	 * Check possibility of the knight to the given position.
 	 * 
 	 * @param to
-	 *            position to go
 	 * @param b
-	 *            board
-	 * @return true if position in range and not visited.
+	 * @return
 	 */
 	public boolean canMove(Position to, Board b) {
-		if (onBoard(b, to) && !b.isVisited(to) && possibleMoves(b).contains(to)) {
+		if (onBoard(b, to) && !b.isVisited(to)) {
 			return true;
 		}
 		return false;
@@ -221,6 +219,66 @@ public class Knight {
 			return true;
 		}
 		return false;
+	}
+
+	public boolean isClosedTour(Board b) {
+		int[] a = b.getBoard();
+		int a4 = b.getSize() * b.getSize() - 1;
+		if (a[0] == 1 && a[b.getSize() - 1] == 1 && a[a4] == 1 && a[a4 - b.getSize() + 1] == 1 && nextMoveIsStart(b)) {
+			// b.print(this);
+			return true;
+		}
+		return false;
+	}
+
+	private boolean nextMoveIsStart(Board b) {
+		b.getBoard()[0] = 0;
+		// b.print(this);
+		if (this.p != new Position(0, 0) && possibleMoves(b).contains(new Position(0, 0))) {
+			// System.out.println(this.p != new Position(0, 0));
+			// b.print(this);
+			// for(Position p : getMovesHistory()) {
+			// //System.out.println("H - " + p.toString());
+			// }
+			b.getBoard()[0] = 1;
+			// positions.add(this.p);
+			this.memo = this.p;
+			return true;
+		}
+		b.getBoard()[0] = 1;
+		return false;
+	}
+
+	public void goBackUntillReacheble(Position next, Board b) {
+		List<Position> toRemove = new LinkedList<>();
+		Position preLast = this.getMovesHistory().get(this.getMovesHistory().size() - 2);
+		this.move(preLast, b);
+		b.setVisited(this.getMovesHistory().get(this.getMovesHistory().size() - 1), false);
+		toRemove.add(this.getMovesHistory().get(this.getMovesHistory().size() - 1));
+		// b.print(this);
+		// remove last and go previous position
+		for (int i = this.getMovesHistory().size() - 2; i >= 0; i--) {
+
+			if (this.canMove(next, b) && possibleMoves(b).contains(next)) {
+				removeFromHistory(toRemove);
+				b.setVisited(this.p, true);
+				// b.print(this);
+				break;
+			} else {
+				// b.print(this);
+				if (i - 1 >= 0) {
+					this.move(getMovesHistory().get(i - 1), b);
+					b.setVisited(getMovesHistory().get(i), false);
+					toRemove.add(getMovesHistory().get(i));
+				}else {
+					break;
+				}
+			}
+		}
+	}
+
+	private void removeFromHistory(List<Position> toRemove) {
+		this.positions.removeAll(toRemove);
 	}
 
 }
