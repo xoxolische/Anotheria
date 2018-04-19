@@ -3,6 +3,7 @@ package magic;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.lang.ref.WeakReference;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
@@ -169,6 +170,15 @@ public class MagicSquare {
 		s += "\r\n";
 		return s;
 	}
+	
+	public String squareToPageView() {
+		String s = "";
+		for (int i = 0; i < size; i++) {
+			s += String.valueOf(Arrays.toString(this.getRow(i)) + "<br>");
+		}
+		s += "<br>";
+		return s;
+	}
 
 	/**
 	 * Saves squares to the file.
@@ -203,6 +213,7 @@ public class MagicSquare {
 
 	public boolean noConflictsInMatrix() {
 		int vCounter = 0;
+		
 		Set<Integer> s = new HashSet<>();
 		for (int v : square) {
 			if (v != 0) {
@@ -211,8 +222,12 @@ public class MagicSquare {
 			}
 		}
 		if (vCounter != s.size()) {
+			s = null;
 			return false;
 		}
+		//WeakReference<Set<Integer>> ss = new WeakReference<>(s);
+		s = null;
+		
 		return true;
 	}
 

@@ -44,7 +44,7 @@ import magic.Subset;
  *
  */
 public class MainMagicFinder implements Runnable {
-	private static final int SIZE = 4;
+	private static final int SIZE = 5;
 
 	private static Map<Integer, List<int[]>> cache;
 	private static final int THREADS = 4;
@@ -55,7 +55,7 @@ public class MainMagicFinder implements Runnable {
 	private List<MagicSquare> initialList;
 
 	private static int current = 0;
-	private static int step = 50;
+	private static int step = 1;
 
 	public MainMagicFinder(List<MagicSquare> ms) {
 		this.initialList = ms;
@@ -149,6 +149,7 @@ public class MainMagicFinder implements Runnable {
 	// int end = begin + partSize;
 	// List<MagicSquare> magicSquareList = new LinkedList<>(ms.subList(begin, end));
 	private static void searchForSquares(List<MagicSquare> ms) throws IOException {
+		int counter = 0;
 		long startTime = System.nanoTime();
 		List<MagicSquare> magicSquareList = new LinkedList<>(ms);
 		Set<MagicSquare> toAdd = new HashSet<>();
@@ -161,6 +162,13 @@ public class MainMagicFinder implements Runnable {
 				for (int[] vector : cache.get(start)) {
 					m.setCol(i, vector);
 					if (m.noConflictsInMatrix()) {
+						counter++;
+						if (counter == 500000) {
+							//m.print();
+							System.gc();
+							counter = 0;
+							System.out.println("GC called!");
+						}
 						if (i != SIZE - 1) {
 							boolean good = true;
 							for (int j = 1; j < SIZE; j++) {

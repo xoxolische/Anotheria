@@ -62,6 +62,7 @@ public class MagicSquareHibernate extends MagicSquare {
 		return squareView;
 	}
 
+
 	public void setId(long id) {
 		this.id = id;
 	}
@@ -72,6 +73,11 @@ public class MagicSquareHibernate extends MagicSquare {
 
 	public void setSquareView(String squareView) {
 		this.squareView = squareView;
+	}
+
+	@Override
+	public String toString() {
+		return "MagicSquareHibernate [id=" + id + ", createdAt=" + createdAt + ", squareView=" + squareView + "]";
 	}
 
 }

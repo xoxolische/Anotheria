@@ -1,5 +1,7 @@
 package restful;
 
+import java.util.List;
+
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -20,19 +22,10 @@ import model.MagicSquareHibernate;
  * @author Nikita Pavlov
  *
  */
-@Path("/ms")
+@Path("/magicSquare")
 public class ServiceImpl implements Service<MagicSquareHibernate> {
 
 	MagicSquareDaoImpl dao = new MagicSquareDaoImpl();
-
-	@POST
-	@Path("/t")
-	@Produces(MediaType.APPLICATION_JSON)
-	@Consumes(MediaType.APPLICATION_JSON)
-	public Response create(T entity) {
-		System.out.println("good!");
-		return Response.status(200).entity(entity.t).build();
-	}
 
 	@POST
 	@Path("/create")
@@ -40,8 +33,15 @@ public class ServiceImpl implements Service<MagicSquareHibernate> {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Override
 	public Response create(MagicSquareHibernate entity) {
-		dao.create(entity);
-		return Response.status(200).entity(null).build();
+		entity.print();
+		entity.getSquareView();
+		try {
+			dao.create(entity);
+			return Response.status(200).entity("Magic square saved!<br>" + entity.squareToPageView()).build();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return Response.status(500).entity("Something went wrong!").build();
+		}
 	}
 
 	@GET
@@ -49,30 +49,48 @@ public class ServiceImpl implements Service<MagicSquareHibernate> {
 	@Override
 	public Response get(@PathParam(value = "id") long id) {
 		MagicSquareHibernate e = dao.get(id);
-		return Response.status(200).entity(e).build();
+		if (e != null) {
+			return Response.status(200).entity(e.toString()).build();
+		} else {
+			return Response.status(200).entity("Square with such id does not exists!").build();
+		}
 	}
 
 	@PUT
 	@Path("/update")
 	@Override
 	public Response update(MagicSquareHibernate entity) {
-		dao.update(entity);
-		return Response.status(200).entity(null).build();
+		try {
+			entity.getSquareView();
+			dao.update(entity);
+			return Response.status(200).entity("Square updated successfuly!").build();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return Response.status(500).entity("Something went wrong!").build();
+		}
 	}
 
 	@DELETE
 	@Path("/delete/{id}")
 	@Override
-	public Response delete(long id) {
+	public Response delete(@PathParam(value = "id") long id) {
 		dao.delete(id);
-		return Response.status(200).entity(null).build();
+		return Response.status(200).entity("Square was deleted!").build();
 	}
 
 	@GET
 	@Path("/getAll")
 	public Response getAll() {
-		dao.getAll();
-		return Response.status(200).entity(null).build();
+		List<MagicSquareHibernate> l = dao.getAll();
+		if (l != null) {
+			String view = "";
+			for (MagicSquareHibernate m : l) {
+				view += m.toString() + "<br>";
+			}
+			return Response.status(200).entity(view).build();
+		} else {
+			return Response.status(200).entity("No squares in database!").build();
+		}
 	}
 
 }
