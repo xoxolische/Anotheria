@@ -170,7 +170,13 @@ public class MagicSquare {
 		s += "\r\n";
 		return s;
 	}
-	
+	public String squareToDb() {
+		String s = "";
+		for (int i = 0; i < square.length; i++) {
+			s += String.valueOf(square[i] + " ");
+		}
+		return s;
+	}
 	public String squareToPageView() {
 		String s = "";
 		for (int i = 0; i < size; i++) {

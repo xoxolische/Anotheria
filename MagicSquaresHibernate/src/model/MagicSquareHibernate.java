@@ -57,7 +57,7 @@ public class MagicSquareHibernate extends MagicSquare {
 	 */
 	public String getSquareView() {
 		if (squareView == null) {
-			squareView = super.squareToString();
+			squareView = super.squareToDb();
 		}
 		return squareView;
 	}

@@ -92,5 +92,23 @@ public class ServiceImpl implements Service<MagicSquareHibernate> {
 			return Response.status(200).entity("No squares in database!").build();
 		}
 	}
+	
+	@POST
+	@Path("/search")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Override
+	public Response search(MagicSquareHibernate pattern) {
+		List<MagicSquareHibernate> l = dao.search(pattern);
+		if (l != null) {
+			String view = "Squares: <br>";
+			for (MagicSquareHibernate m : l) {
+				view += m.toString() + "<br>";
+			}
+			return Response.status(200).entity(view).build();
+		} else {
+			return Response.status(200).entity("No squares in database!").build();
+		}
+	}
 
 }

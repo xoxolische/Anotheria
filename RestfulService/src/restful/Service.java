@@ -17,7 +17,7 @@ public interface Service<E> {
 	 * 
 	 * @param entity
 	 *            to save
-	 * @return TODO
+	 * @return 
 	 */
 	Response create(E entity);
 
@@ -26,7 +26,7 @@ public interface Service<E> {
 	 * 
 	 * @param id
 	 *            of entity
-	 * @return TODO
+	 * @return 
 	 */
 	Response get(long id);
 
@@ -35,7 +35,7 @@ public interface Service<E> {
 	 * 
 	 * @param entity
 	 *            to update
-	 * @return TODO
+	 * @return 
 	 */
 	Response update(E entity);
 
@@ -44,8 +44,15 @@ public interface Service<E> {
 	 * 
 	 * @param id
 	 *            of entity
-	 * @return TODO
+	 * @return 
 	 */
 	Response delete(long id);
+	
+	/**
+	 * 
+	 * @param pattern that is our matrix of size n with values
+	 * @return
+	 */
+	Response search(E pattern);
 
 }
