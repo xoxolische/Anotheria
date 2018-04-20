@@ -4,6 +4,12 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * Class for array subsets
+ * 
+ * @author Nikita Pavlov
+ *
+ */
 public class Subset {
 
 	public Set<int[]> subsets;
@@ -48,9 +54,13 @@ public class Subset {
 	// mainly uses combinationUtil()
 	/**
 	 * Generates subsets given int array
-	 * @param arr - set of values
-	 * @param n - size of array
-	 * @param r - size of subset array
+	 * 
+	 * @param arr
+	 *            - set of values
+	 * @param n
+	 *            - size of array
+	 * @param r
+	 *            - size of subset array
 	 */
 	public void generateSubsets(int arr[], int n, int r) {
 		// A temporary array to store all combination
@@ -65,7 +75,8 @@ public class Subset {
 	/*
 	 * 1. fill 1st row. Take all possible subsets, permutate sets, check if correct.
 	 *
-	/* Driver function to check for above function */
+	 * /* Driver function to check for above function
+	 */
 	public static void main(String[] args) {
 		int[] a = new int[23];
 		for (int i = 0; i < a.length; i++) {

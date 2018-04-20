@@ -6,7 +6,7 @@ import java.util.HashMap;
 import concurrency.dictionary.Dictionary;
 
 /**
- * This class shows ho to solve dictionary problem with synchronizedMap.
+ * This class shows how to solve dictionary problem with synchronizedMap.
  * 
  * @author Nikita Pavlov
  *

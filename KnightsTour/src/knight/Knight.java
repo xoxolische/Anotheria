@@ -174,12 +174,6 @@ public class Knight {
 		return false;
 	}
 
-	/**
-	 * 
-	 * @param to
-	 * @param b
-	 * @return
-	 */
 	public boolean canMove(Position to, Board b) {
 		if (onBoard(b, to) && !b.isVisited(to)) {
 			return true;

@@ -7,6 +7,13 @@ package knight;
  *
  */
 public class Position {
+	private static final char[] X = "abcdefghijklmnopqrstuvwxyz".toCharArray();
+	private static final int[] Y = new int[X.length];
+	static {
+		for (int i = 0; i < X.length; i++) {
+			Y[i] = i + 1;
+		}
+	}
 
 	private int x;
 	private int y;
@@ -68,6 +75,14 @@ public class Position {
 
 		System.out.println("");
 		System.out.println("");
+	}
+
+	/**
+	 * 
+	 * @return chess notation String of position
+	 */
+	public String toChessNotation() {
+		return "" + X[this.x] + Y[this.y];
 	}
 
 	@Override

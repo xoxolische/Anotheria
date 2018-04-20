@@ -6,7 +6,7 @@ import java.util.concurrent.locks.ReentrantLock;
 import concurrency.dictionary.Dictionary;
 
 /**
- * This class shows ho to solve dictionary problem with lock.
+ * This class shows how to solve dictionary problem with lock.
  * 
  * @author Nikita Pavlov
  *

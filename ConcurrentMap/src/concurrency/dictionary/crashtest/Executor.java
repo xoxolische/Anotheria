@@ -3,7 +3,7 @@ package concurrency.dictionary.crashtest;
 import concurrency.dictionary.Dictionary;
 
 /**
- * This class give opportunity to execute our dictionary in multiple threads.
+ * This class gives opportunity to execute our dictionary in multiple threads.
  * 
  * @author Nikita Pavlov
  *

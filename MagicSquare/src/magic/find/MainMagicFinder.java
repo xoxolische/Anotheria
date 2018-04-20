@@ -44,10 +44,11 @@ import magic.Subset;
  *
  */
 public class MainMagicFinder implements Runnable {
-	private static final int SIZE = 5;
+	private static final int SIZE = 4;
+	private static final int THREADS = 4;
+	private static int step = 100;
 
 	private static Map<Integer, List<int[]>> cache;
-	private static final int THREADS = 4;
 	private static List<MagicSquare> magicSquareList;
 	private static List<MagicSquare> finalList = new LinkedList<>();
 
@@ -55,7 +56,6 @@ public class MainMagicFinder implements Runnable {
 	private List<MagicSquare> initialList;
 
 	private static int current = 0;
-	private static int step = 1;
 
 	public MainMagicFinder(List<MagicSquare> ms) {
 		this.initialList = ms;

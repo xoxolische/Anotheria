@@ -4,6 +4,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * This class represents QueenProblem Solution
+ * 
+ * @author Nikita Pavlov
+ *
+ */
 public class Solution {
 	private static final char QUEEN = 'X';
 	private static final char EMPTY = 'o';
@@ -13,6 +19,12 @@ public class Solution {
 		result = new ArrayList<>();
 	}
 
+	/**
+	 * 
+	 * @param n
+	 *            Size of board
+	 * @return List with result Strings
+	 */
 	public List<String[]> solveNQueens(int n) {
 		if (n < 1) {
 			return result;
@@ -27,6 +39,10 @@ public class Solution {
 		return result;
 	}
 
+	/*
+	 * Recursively fills rows with different queen position in columns and check if
+	 * it does not conflicts with other
+	 */
 	private void solutions(int start, int total, String[] rows, List<String[]> result) {
 		if (start >= total) {
 			result.add(rows.clone());
@@ -49,9 +65,8 @@ public class Solution {
 
 	}
 
-	// check if current col has conflict with previous Q
+	// check if current col conflicts with previous
 	private boolean isValid(int col, int stRow, String[] rows) {
-		// checkColumn
 		for (int i = 0; i < stRow; i++) {
 			int qCol = rows[i].indexOf(QUEEN);
 

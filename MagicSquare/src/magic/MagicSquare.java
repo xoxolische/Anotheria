@@ -3,7 +3,6 @@ package magic;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.lang.ref.WeakReference;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
@@ -12,6 +11,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+/**
+ * 
+ * @author Nikita Pavlov
+ *
+ */
 public class MagicSquare {
 
 	private int[] square;
@@ -23,6 +27,11 @@ public class MagicSquare {
 
 	}
 
+	/**
+	 * 
+	 * @param size
+	 *            of square
+	 */
 	public MagicSquare(int size) {
 		this.size = size;
 		this.square = new int[size * size];
@@ -42,6 +51,12 @@ public class MagicSquare {
 		return magicSum;
 	}
 
+	/**
+	 * 
+	 * @param i
+	 *            number of row begin with 0
+	 * @return int array
+	 */
 	public int[] getRow(int i) {
 		int[] row = new int[size];
 		int r = size * i;
@@ -51,6 +66,12 @@ public class MagicSquare {
 		return row;
 	}
 
+	/**
+	 * 
+	 * @param i
+	 *            index of row to be set. Begins with 0
+	 * @param v
+	 */
 	public void setRow(int i, int[] v) {
 		int r = size * i;
 		for (int j = 0; j < size; j++) {
@@ -58,6 +79,12 @@ public class MagicSquare {
 		}
 	}
 
+	/**
+	 * 
+	 * @param i
+	 *            index of column begins with 0.
+	 * @return
+	 */
 	public int[] getCol(int i) {
 		int[] column = new int[size];
 		int r = 0;
@@ -68,6 +95,12 @@ public class MagicSquare {
 		return column;
 	}
 
+	/**
+	 * 
+	 * @param i
+	 *            index of column to be set. Begins with 0
+	 * @param v
+	 */
 	public void setCol(int i, int[] v) {
 		int c = i;
 		int r = 0;
@@ -75,33 +108,6 @@ public class MagicSquare {
 			square[r + c] = v[j];
 			r += size;
 		}
-	}
-
-	public void setMinorDiagonal(int[] diagonal) {
-		if (diagonal != null && diagonal.length == 4) {
-			square[4] = diagonal[0];
-			square[8] = diagonal[1];
-			square[16] = diagonal[2];
-			square[20] = diagonal[3];
-
-		}
-	}
-
-	public int[] getMainDiagonal() {
-		int[] main = new int[5];
-		main[0] = square[0];
-		main[1] = square[6];
-		main[2] = square[12];
-		main[3] = square[18];
-		main[4] = square[24];
-		return main;
-	}
-
-	public boolean minorDiagonalIsSet() {
-		if (square[4] != 0 && square[8] != 0 && square[16] != 0 && square[20] != 0) {
-			return true;
-		}
-		return false;
 	}
 
 	/**
@@ -170,6 +176,7 @@ public class MagicSquare {
 		s += "\r\n";
 		return s;
 	}
+
 	public String squareToDb() {
 		String s = "";
 		for (int i = 0; i < square.length; i++) {
@@ -177,6 +184,7 @@ public class MagicSquare {
 		}
 		return s;
 	}
+
 	public String squareToPageView() {
 		String s = "";
 		for (int i = 0; i < size; i++) {
@@ -217,9 +225,13 @@ public class MagicSquare {
 		return size;
 	}
 
+	/**
+	 * 
+	 * @return true if square has only uniq values
+	 */
 	public boolean noConflictsInMatrix() {
 		int vCounter = 0;
-		
+
 		Set<Integer> s = new HashSet<>();
 		for (int v : square) {
 			if (v != 0) {
@@ -231,9 +243,9 @@ public class MagicSquare {
 			s = null;
 			return false;
 		}
-		//WeakReference<Set<Integer>> ss = new WeakReference<>(s);
+		// WeakReference<Set<Integer>> ss = new WeakReference<>(s);
 		s = null;
-		
+
 		return true;
 	}
 
@@ -256,6 +268,17 @@ public class MagicSquare {
 		return true;
 	}
 
+	/**
+	 * Get diagonal
+	 * <p>
+	 * o o X
+	 * <p>
+	 * o X o
+	 * <p>
+	 * X o o
+	 * 
+	 * @param diagonal
+	 */
 	public int[] getDiagonal1() {
 		int[] d = new int[size];
 		for (int i = 0; i < size; i++) {
@@ -264,6 +287,17 @@ public class MagicSquare {
 		return d;
 	}
 
+	/**
+	 * Get diagonal
+	 * <p>
+	 * X o o
+	 * <p>
+	 * o X o
+	 * <p>
+	 * o o X
+	 * 
+	 * @param diagonal
+	 */
 	public int[] getDiagonal2() {
 		int[] d = new int[size];
 		for (int i = 0; i < size; i++) {

@@ -5,6 +5,12 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * Class for array permutations
+ * 
+ * @author Nikita Pavlov
+ *
+ */
 public class Permutations {
 
 	static int counter = 0;
@@ -26,7 +32,7 @@ public class Permutations {
 		// int[] arr4 = { 21, 22, 23, 24, 25 }; // 5
 		//
 		Permutations s = new Permutations();
-		
+
 		// s.list.add(arr1);
 		// s.list.add(arr2);
 		// s.list.add(arr3);
@@ -41,7 +47,8 @@ public class Permutations {
 		for (int[] i : s.permutationsList) {
 			System.out.println(Arrays.toString(i));
 		}
-		System.out.println("Minutes : " + TimeUnit.MILLISECONDS.toMinutes(end - start) + "; L - " + s.permutationsList.size());
+		System.out.println(
+				"Minutes : " + TimeUnit.MILLISECONDS.toMinutes(end - start) + "; L - " + s.permutationsList.size());
 	}
 
 	/**
@@ -85,6 +92,7 @@ public class Permutations {
 		}
 
 	}
+
 	private int[] decrementArr(int[] arr) {
 
 		int[] arrNext = new int[arr.length - 1];
@@ -114,21 +122,21 @@ public class Permutations {
 		arrBuf[secondCycleElement] = buf;
 	}
 
-//	private void printArr(int[] arrHead, int[] arrTail) {
-//		System.out.print(++counter + ": ");
-//		if (arrHead != null && arrHead.length != 0) {
-//			for (int item : arrHead) {
-//				System.out.print(" " + item);
-//			}
-//		}
-//		if (arrTail != null && arrTail.length != 0) {
-//			for (int item : arrTail) {
-//				System.out.print(" " + item);
-//			}
-//		}
-//
-//		System.out.println();
-//	}
+	// private void printArr(int[] arrHead, int[] arrTail) {
+	// System.out.print(++counter + ": ");
+	// if (arrHead != null && arrHead.length != 0) {
+	// for (int item : arrHead) {
+	// System.out.print(" " + item);
+	// }
+	// }
+	// if (arrTail != null && arrTail.length != 0) {
+	// for (int item : arrTail) {
+	// System.out.print(" " + item);
+	// }
+	// }
+	//
+	// System.out.println();
+	// }
 
 	private int[] concat(int[] arrHead, int[] arrTail) {
 		int[] res = null;

@@ -1,6 +1,6 @@
 package queen;
 
-public class SolutionLauncher {
+public class Main {
 	public static void main(String[] args) {
 		Solution q = new Solution();
 		q.solveNQueens(8);

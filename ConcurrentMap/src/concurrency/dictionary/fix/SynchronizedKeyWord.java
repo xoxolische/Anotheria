@@ -5,7 +5,7 @@ import java.util.HashMap;
 import concurrency.dictionary.Dictionary;
 
 /**
- * This class shows ho to solve dictionary problem with "synchronized" keyword.
+ * This class shows how to solve dictionary problem with "synchronized" keyword.
  * 
  * @author Nikita Pavlov
  *

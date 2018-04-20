@@ -5,7 +5,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import concurrency.dictionary.Dictionary;
 
 /**
- * This class shows ho to solve dictionary problem with ConcurrentHashMap.
+ * This class shows how to solve dictionary problem with ConcurrentHashMap.
  * 
  * @author Nikita Pavlov
  *
