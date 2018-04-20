@@ -93,6 +93,7 @@ public class ServiceImpl implements Service<MagicSquareHibernate> {
 		}
 	}
 	
+	
 	@POST
 	@Path("/search")
 	@Produces(MediaType.APPLICATION_JSON)
