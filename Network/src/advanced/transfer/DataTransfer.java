@@ -8,6 +8,9 @@ import java.io.Serializable;
 import java.nio.file.Files;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * This class helps to exchange commands and files beetween server and client
  * 
@@ -15,7 +18,7 @@ import java.util.List;
  *
  */
 public class DataTransfer implements Serializable {
-
+	private static final Logger LOGGER = LoggerFactory.getLogger(DataTransfer.class);
 	private static final long serialVersionUID = 5487422122369484574L;
 	private Object data;
 	private ObjectOutputStream commandOut;
@@ -37,7 +40,7 @@ public class DataTransfer implements Serializable {
 	}
 
 	/**
-	 * This method 
+	 * This method
 	 */
 	public void send() {
 		if (this.data instanceof List) {
@@ -45,7 +48,7 @@ public class DataTransfer implements Serializable {
 				commandOut.writeObject(data);
 				System.out.println("DIR sent!");
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
+				LOGGER.warn(e.getMessage());
 				e.printStackTrace();
 			}
 		}
@@ -59,6 +62,7 @@ public class DataTransfer implements Serializable {
 					fileOut.flush();
 				} catch (IOException e) {
 					e.printStackTrace();
+					LOGGER.warn(e.getMessage());
 				}
 			}
 		}

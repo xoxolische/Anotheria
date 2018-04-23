@@ -8,6 +8,8 @@ import javax.persistence.criteria.Root;
 
 import org.hibernate.Session;
 import org.hibernate.query.Query;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import dao.CRUD;
 import hibernate.HibernateUtil;
@@ -21,7 +23,7 @@ import hibernate.HibernateUtil;
  *            Entity we work with
  */
 public abstract class DaoImpl<E> implements CRUD<E> {
-
+	private static final Logger LOGGER = LoggerFactory.getLogger(DaoImpl.class);
 	protected final Class<E> entityClass;
 
 	public DaoImpl(Class<E> entityClass) {
@@ -38,6 +40,7 @@ public abstract class DaoImpl<E> implements CRUD<E> {
 		} catch (Exception e) {
 			session.getTransaction().rollback();
 			e.printStackTrace();
+			LOGGER.warn(e.getMessage());
 		}
 	}
 
@@ -52,6 +55,7 @@ public abstract class DaoImpl<E> implements CRUD<E> {
 		} catch (Exception e) {
 			session.getTransaction().rollback();
 			e.printStackTrace();
+			LOGGER.warn(e.getMessage());
 			return null;
 		}
 	}
@@ -65,6 +69,7 @@ public abstract class DaoImpl<E> implements CRUD<E> {
 			session.getTransaction().commit();
 		} catch (Exception e) {
 			session.getTransaction().rollback();
+			LOGGER.warn(e.getMessage());
 		}
 	}
 
@@ -78,6 +83,7 @@ public abstract class DaoImpl<E> implements CRUD<E> {
 			session.getTransaction().commit();
 		} catch (Exception e) {
 			session.getTransaction().rollback();
+			LOGGER.warn(e.getMessage());
 		}
 	}
 
@@ -97,6 +103,7 @@ public abstract class DaoImpl<E> implements CRUD<E> {
 		} catch (Exception e) {
 			e.printStackTrace();
 			session.getTransaction().rollback();
+			LOGGER.warn(e.getMessage());
 			return null;
 		}
 	}

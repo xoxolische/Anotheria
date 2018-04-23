@@ -4,6 +4,9 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * This class contains common data for connection to local postgreSQL database.
  * 
@@ -11,7 +14,7 @@ import java.sql.SQLException;
  *
  */
 public final class LocalConnection {
-
+	private static final Logger LOGGER = LoggerFactory.getLogger(LocalConnection.class);
 	/**
 	 * Hostname of our database
 	 */
@@ -51,8 +54,10 @@ public final class LocalConnection {
 			return connection;
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
+			LOGGER.warn(e.getMessage());
 		} catch (SQLException e) {
 			e.printStackTrace();
+			LOGGER.warn(e.getMessage());
 		}
 
 		return null;

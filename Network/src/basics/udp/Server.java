@@ -6,14 +6,18 @@ import java.net.DatagramSocket;
 import java.net.SocketException;
 import java.nio.charset.StandardCharsets;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class Server {
-	DatagramSocket ds;
+	private static final Logger LOGGER = LoggerFactory.getLogger(Server.class);
+	private DatagramSocket ds;
 
 	public Server(int port) {
 		try {
 			ds = new DatagramSocket(port);
 		} catch (SocketException e) {
-			// LOGGER
+			LOGGER.warn(e.getMessage());
 			e.printStackTrace();
 		}
 	}
@@ -33,7 +37,7 @@ public class Server {
 				String m = new String(request.getData(), StandardCharsets.UTF_8);
 				System.out.println(m);
 			} catch (IOException e) {
-				// TODO LOGGER
+				LOGGER.warn(e.getMessage());
 				e.printStackTrace();
 			}
 		}

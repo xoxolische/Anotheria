@@ -9,6 +9,9 @@ import java.net.Socket;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * Server side
  * 
@@ -16,7 +19,7 @@ import java.util.List;
  *
  */
 public class Server {
-
+	private static final Logger LOGGER = LoggerFactory.getLogger(Server.class);
 	private ServerSocket commandTransfer;
 	private ServerSocket fileTransfer;
 
@@ -33,6 +36,7 @@ public class Server {
 			fileTransfer = new ServerSocket(filePort);
 		} catch (Exception e) {
 			e.printStackTrace();
+			LOGGER.warn(e.getMessage());
 		}
 	}
 
@@ -73,6 +77,7 @@ public class Server {
 			fos.close();
 		} catch (IOException e) {
 			e.printStackTrace();
+			LOGGER.warn(e.getMessage());
 		}
 		return null;
 	}
@@ -102,6 +107,7 @@ public class Server {
 				new Thread(new Connection(clientCommandSocket, clientFileSocket, this)).start();
 			} catch (Exception e) {
 				e.printStackTrace();
+				LOGGER.warn(e.getMessage());
 			}
 		}
 	}

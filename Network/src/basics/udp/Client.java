@@ -7,6 +7,9 @@ import java.net.InetAddress;
 import java.net.SocketException;
 import java.net.UnknownHostException;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * UDP client socket class
  * 
@@ -14,6 +17,7 @@ import java.net.UnknownHostException;
  *
  */
 public class Client {
+	private static final Logger LOGGER = LoggerFactory.getLogger(Client.class);
 	private DatagramSocket socket;
 	private InetAddress address;
 	private int port;
@@ -24,7 +28,7 @@ public class Client {
 			socket = new DatagramSocket();
 			this.port = port;
 		} catch (UnknownHostException | SocketException e) {
-			// TODO LOGGER
+			LOGGER.warn(e.getMessage());
 			e.printStackTrace();
 		}
 	}
@@ -40,7 +44,7 @@ public class Client {
 			DatagramPacket request = new DatagramPacket(b, b.length, address, port);
 			socket.send(request);
 		} catch (IOException e) {
-			// TODO Logger
+			LOGGER.warn(e.getMessage());
 			e.printStackTrace();
 		}
 	}

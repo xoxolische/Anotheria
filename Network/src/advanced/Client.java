@@ -14,6 +14,9 @@ import java.net.Socket;
 import java.nio.file.Files;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import advanced.commands.DIRCommand;
 import advanced.commands.GETCommand;
 import advanced.commands.ICommand;
@@ -26,7 +29,7 @@ import advanced.commands.PUTCommand;
  *
  */
 public class Client {
-
+	private static final Logger LOGGER = LoggerFactory.getLogger(Client.class);
 	private Socket commandSocket;
 	private Socket fileSocket;
 	private ObjectInputStream commandInput;
@@ -56,6 +59,7 @@ public class Client {
 
 		} catch (Exception e) {
 			e.printStackTrace();
+			LOGGER.warn(e.getMessage());
 		}
 	}
 
@@ -71,6 +75,7 @@ public class Client {
 			commandOutput.flush();
 		} catch (Exception e) {
 			e.printStackTrace();
+			LOGGER.warn(e.getMessage());
 		}
 	}
 
@@ -84,6 +89,7 @@ public class Client {
 			return commandInput.readObject();
 		} catch (ClassNotFoundException | IOException e) {
 			e.printStackTrace();
+			LOGGER.warn(e.getMessage());
 			return null;
 		}
 
@@ -106,6 +112,7 @@ public class Client {
 			fos.close();
 		} catch (IOException e) {
 			e.printStackTrace();
+			LOGGER.warn(e.getMessage());
 		}
 	}
 
@@ -123,6 +130,7 @@ public class Client {
 				fileOutput.flush();
 			} catch (IOException e) {
 				e.printStackTrace();
+				LOGGER.warn(e.getMessage());
 			}
 		}
 	}
@@ -162,6 +170,7 @@ public class Client {
 				}
 			} catch (IOException e) {
 				e.printStackTrace();
+				LOGGER.warn(e.getMessage());
 			}
 		}
 	}

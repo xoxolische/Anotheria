@@ -13,6 +13,9 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import dao.impl.MagicSquareDaoImpl;
 import magic.MagicSquare;
 import model.MSMapper;
@@ -27,6 +30,8 @@ import model.MagicSquareHibernate;
 @Path("/magicSquare")
 public class ServiceImpl implements Service<MagicSquareHibernate> {
 
+	private static final Logger LOGGER = LoggerFactory.getLogger(ServiceImpl.class);
+	
 	MagicSquareDaoImpl dao = new MagicSquareDaoImpl();
 	MSMapper mapper = new MSMapper();
 
@@ -42,6 +47,7 @@ public class ServiceImpl implements Service<MagicSquareHibernate> {
 			return Response.status(200).entity("Magic square saved!<br>" + ms.squareToPageView()).build();
 		} catch (Exception e) {
 			e.printStackTrace();
+			LOGGER.warn(e.getMessage());
 			return Response.status(500).entity("Something went wrong!").build();
 		}
 	}
@@ -68,6 +74,7 @@ public class ServiceImpl implements Service<MagicSquareHibernate> {
 			return Response.status(200).entity("Square updated successfuly!").build();
 		} catch (Exception e) {
 			e.printStackTrace();
+			LOGGER.warn(e.getMessage());
 			return Response.status(500).entity("Something went wrong!").build();
 		}
 	}

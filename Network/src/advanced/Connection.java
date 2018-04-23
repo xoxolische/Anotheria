@@ -3,6 +3,9 @@ package advanced;
 import java.io.*;
 import java.net.Socket;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import advanced.commands.DIRCommand;
 import advanced.commands.GETCommand;
 import advanced.commands.ICommand;
@@ -16,7 +19,7 @@ import advanced.transfer.DataTransfer;
  *
  */
 public class Connection implements Runnable {
-
+	private static final Logger LOGGER = LoggerFactory.getLogger(Connection.class);
 	private Socket clientCommandSocket;
 	private Socket clientFileSocket;
 	private Server server;
@@ -42,6 +45,7 @@ public class Connection implements Runnable {
 			fileOutput = clientFileSocket.getOutputStream();
 		} catch (Exception e) {
 			e.printStackTrace();
+			LOGGER.warn(e.getMessage());
 		}
 	}
 
@@ -61,6 +65,7 @@ public class Connection implements Runnable {
 				}
 			} catch (ClassNotFoundException | IOException e) {
 				e.printStackTrace();
+				LOGGER.warn(e.getMessage());
 			}
 		}
 	}

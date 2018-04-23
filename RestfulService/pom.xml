@@ -35,7 +35,18 @@
 	</repositories>
 
 	<dependencies>
-
+		<!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-api -->
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>1.6.2</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-simple -->
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-simple</artifactId>
+			<version>1.6.2</version>
+		</dependency>
 		<dependency>
 			<groupId>com.sun.jersey</groupId>
 			<artifactId>jersey-bundle</artifactId>
@@ -67,13 +78,11 @@
 			<version>3.1.0</version>
 			<scope>provided</scope>
 		</dependency>
-
-
-
 		<dependency>
 			<groupId>MagicSquaresHibernate</groupId>
 			<artifactId>MagicSquaresHibernate</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
+
 	</dependencies>
 </project>

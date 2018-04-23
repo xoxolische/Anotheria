@@ -1,6 +1,9 @@
 package basics.tcp;
 
 import java.net.*;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import java.io.*;
 
 /**
@@ -10,6 +13,7 @@ import java.io.*;
  *
  */
 public class Client {
+	private static final Logger LOGGER = LoggerFactory.getLogger(Client.class);
 	private Socket socket;
 	private DataOutputStream out;
 
@@ -33,7 +37,7 @@ public class Client {
 			OutputStream sout = socket.getOutputStream();
 			out = new DataOutputStream(sout);
 		} catch (Exception e) {
-			// TODO LOGGER
+			LOGGER.warn(e.getMessage());
 		}
 
 	}
@@ -46,7 +50,7 @@ public class Client {
 			out.close();
 			socket.close();
 		} catch (IOException e) {
-			// TODO LOGGER
+			LOGGER.warn(e.getMessage());
 			e.printStackTrace();
 		}
 	}
@@ -61,7 +65,7 @@ public class Client {
 			out.writeUTF(text);
 			out.flush();
 		} catch (IOException e) {
-			// TODO LOGGER
+			LOGGER.warn(e.getMessage());
 			e.printStackTrace();
 		}
 	}

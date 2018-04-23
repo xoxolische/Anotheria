@@ -8,6 +8,8 @@ import javax.persistence.criteria.Root;
 
 import org.hibernate.Session;
 import org.hibernate.query.Query;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import hibernate.HibernateUtil;
 import model.MagicSquareHibernate;
@@ -19,6 +21,7 @@ import model.MagicSquareHibernate;
  *
  */
 public class MagicSquareDaoImpl extends DaoImpl<MagicSquareHibernate> {
+	private static final Logger LOGGER = LoggerFactory.getLogger(MagicSquareDaoImpl.class);
 
 	public MagicSquareDaoImpl() {
 		super(MagicSquareHibernate.class);
@@ -30,7 +33,7 @@ public class MagicSquareDaoImpl extends DaoImpl<MagicSquareHibernate> {
 	 * @param pattern
 	 *            MagicSquareHibernate entity with squareView String set with search
 	 *            pattern
-	 * @return 
+	 * @return
 	 */
 	public List<MagicSquareHibernate> search(MagicSquareHibernate pattern) {
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
@@ -47,6 +50,7 @@ public class MagicSquareDaoImpl extends DaoImpl<MagicSquareHibernate> {
 		} catch (Exception e) {
 			e.printStackTrace();
 			session.getTransaction().rollback();
+			LOGGER.warn(e.getMessage());
 			return null;
 		}
 	}

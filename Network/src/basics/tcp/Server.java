@@ -6,6 +6,9 @@ import java.io.InputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * Server class for TCP socket
  * 
@@ -13,6 +16,7 @@ import java.net.Socket;
  *
  */
 public class Server {
+	private static final Logger LOGGER = LoggerFactory.getLogger(Server.class);
 	private ServerSocket socket;
 
 	public static void main(String[] args) {
@@ -20,7 +24,7 @@ public class Server {
 		try {
 			s.startListen();
 		} catch (IOException e) {
-			// TODO LOGGER
+			LOGGER.warn(e.getMessage());
 			e.printStackTrace();
 		}
 	}
@@ -34,7 +38,7 @@ public class Server {
 		try {
 			socket = new ServerSocket(port);
 		} catch (IOException e) {
-			// TODO LOGGER
+			LOGGER.warn(e.getMessage());
 			e.printStackTrace();
 		}
 	}
