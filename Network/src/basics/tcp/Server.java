@@ -1,46 +1,62 @@
 package basics.tcp;
 
 import java.io.DataInputStream;
-import java.io.DataOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 
+/**
+ * Server class for TCP socket
+ * 
+ * @author Nikita Pavlov
+ *
+ */
 public class Server {
+	private ServerSocket socket;
+
 	public static void main(String[] args) {
-		int port = 2453;
+		Server s = new Server(2453);
 		try {
-			ServerSocket ss = new ServerSocket(port);
-			while (true) {
-
-				System.out.println("Waiting for a connection...");
-				Socket socket = ss.accept();
-
-				System.out.println("Connection established.");
-
-				InputStream sin = socket.getInputStream();
-				OutputStream sout = socket.getOutputStream();
-				DataInputStream in = new DataInputStream(sin);
-				DataOutputStream out = new DataOutputStream(sout);
-
-				String line = null;
-				while (true) {
-					try {
-						line = in.readUTF();
-						System.out.println("Client : " + line);
-						System.out.println("Returned to client in upper case...");
-						out.writeUTF(line.toUpperCase());
-						out.flush();
-					} catch (Exception e) {
-						System.out.println("Client disconnected!");
-						socket.close();
-						break;
-					}
-				}
-			}
-		} catch (Exception e) {
+			s.startListen();
+		} catch (IOException e) {
+			// TODO LOGGER
 			e.printStackTrace();
 		}
+	}
+
+	/**
+	 * 
+	 * @param port
+	 *            of our server
+	 */
+	public Server(int port) {
+		try {
+			socket = new ServerSocket(port);
+		} catch (IOException e) {
+			// TODO LOGGER
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * 
+	 * @param port
+	 *            of our TCP server
+	 * @throws IOException
+	 */
+	private void startListen() throws IOException {
+		while (true) {
+			System.out.println("Waiting for a connection...");
+			Socket con = socket.accept();
+			System.out.println("Connection established.");
+			InputStream sin = con.getInputStream();
+			DataInputStream in = new DataInputStream(sin);
+			String line = in.readUTF();
+			System.out.println("Client : " + line);
+			in.close();
+			con.close();
+		}
+
 	}
 }

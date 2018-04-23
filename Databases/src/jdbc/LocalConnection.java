@@ -12,10 +12,26 @@ import java.sql.SQLException;
  */
 public final class LocalConnection {
 
+	/**
+	 * Hostname of our database
+	 */
 	private static final String HOST = "localhost";
+	/**
+	 * Name of our database
+	 */
 	private static final String DBNAME = "test";
+	/**
+	 * Username for our database
+	 */
 	private static final String USER = "postgres";
+	/**
+	 * Password for our database
+	 */
 	private static final String PASSWORD = "admin";
+
+	/**
+	 * Port of our database
+	 */
 	private static final int PORT = 5432;
 
 	private LocalConnection() {
@@ -24,7 +40,8 @@ public final class LocalConnection {
 
 	/**
 	 * 
-	 * @return java.sql.Connection initialized with parameters for local connection to postgreSQL database
+	 * @return java.sql.Connection initialized with parameters for local connection
+	 *         to postgreSQL database
 	 */
 	public static Connection getConnection() {
 		try {

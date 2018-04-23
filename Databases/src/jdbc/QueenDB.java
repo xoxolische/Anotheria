@@ -16,6 +16,7 @@ public class QueenDB {
 
 	/**
 	 * Initializes PreparedStatement
+	 * 
 	 * @throws SQLException
 	 */
 	public QueenDB() throws SQLException {
@@ -24,6 +25,7 @@ public class QueenDB {
 
 	/**
 	 * Inserts single solution to database.
+	 * 
 	 * @param solution
 	 * @throws SQLException
 	 */
@@ -37,6 +39,7 @@ public class QueenDB {
 
 	/**
 	 * Inserts array of solutions to database.
+	 * 
 	 * @param solutions
 	 * @throws SQLException
 	 */
@@ -49,17 +52,4 @@ public class QueenDB {
 			prep.getConnection().close();
 		}
 	}
-
-//	public void insert(List<String[]> solutions) throws SQLException {
-//		if (prep != null) {
-//			for (String[] sa : solutions) {
-//				for (String s : sa) {
-//					prep.setString(1, s);
-//					prep.executeUpdate();
-//				}
-//			}
-//			prep.getConnection().close();
-//		}
-//	}
-
 }
