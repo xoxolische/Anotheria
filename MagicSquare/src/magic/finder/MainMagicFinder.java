@@ -242,4 +242,8 @@ public class MainMagicFinder implements Runnable {
 		threadNum++;
 		return threadNum;
 	}
+	
+	public static List<MagicSquare> getResult(){
+		return finalList;
+	}
 }

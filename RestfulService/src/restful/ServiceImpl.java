@@ -14,6 +14,8 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import dao.impl.MagicSquareDaoImpl;
+import magic.MagicSquare;
+import model.MSMapper;
 import model.MagicSquareHibernate;
 
 /**
@@ -26,6 +28,7 @@ import model.MagicSquareHibernate;
 public class ServiceImpl implements Service<MagicSquareHibernate> {
 
 	MagicSquareDaoImpl dao = new MagicSquareDaoImpl();
+	MSMapper mapper = new MSMapper();
 
 	@POST
 	@Path("/create")
@@ -33,11 +36,10 @@ public class ServiceImpl implements Service<MagicSquareHibernate> {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Override
 	public Response create(MagicSquareHibernate entity) {
-		entity.print();
-		entity.getSquareView();
+		MagicSquare ms = mapper.getMagicSqaure(entity);
 		try {
 			dao.create(entity);
-			return Response.status(200).entity("Magic square saved!<br>" + entity.squareToPageView()).build();
+			return Response.status(200).entity("Magic square saved!<br>" + ms.squareToPageView()).build();
 		} catch (Exception e) {
 			e.printStackTrace();
 			return Response.status(500).entity("Something went wrong!").build();
@@ -49,8 +51,9 @@ public class ServiceImpl implements Service<MagicSquareHibernate> {
 	@Override
 	public Response get(@PathParam(value = "id") long id) {
 		MagicSquareHibernate e = dao.get(id);
+		MagicSquare ms = mapper.getMagicSqaure(e);
 		if (e != null) {
-			return Response.status(200).entity(e.toString()).build();
+			return Response.status(200).entity(ms.squareToPageView()).build();
 		} else {
 			return Response.status(200).entity("Square with such id does not exists!").build();
 		}
@@ -61,7 +64,6 @@ public class ServiceImpl implements Service<MagicSquareHibernate> {
 	@Override
 	public Response update(MagicSquareHibernate entity) {
 		try {
-			entity.getSquareView();
 			dao.update(entity);
 			return Response.status(200).entity("Square updated successfuly!").build();
 		} catch (Exception e) {

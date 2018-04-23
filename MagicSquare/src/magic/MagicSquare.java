@@ -342,5 +342,4 @@ public class MagicSquare {
 			return false;
 		return true;
 	}
-
 }

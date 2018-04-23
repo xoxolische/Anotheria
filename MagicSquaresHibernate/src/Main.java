@@ -3,6 +3,9 @@ import org.hibernate.SessionFactory;
 
 import dao.impl.MagicSquareDaoImpl;
 import hibernate.HibernateUtil;
+import magic.MagicSquare;
+import magic.finder.MainMagicFinder;
+import model.MSMapper;
 import model.MagicSquareHibernate;
 
 /**
@@ -14,15 +17,16 @@ import model.MagicSquareHibernate;
 public class Main {
 	public static void main(String[] args) throws Exception {
 
+		MSMapper m = new MSMapper();
 		MagicSquareDaoImpl dao = new MagicSquareDaoImpl();
-
-		MagicSquareHibernate ms = new MagicSquareHibernate(5);
-		ms.setRow(0, new int[] { 8, 8, 8, 8, 8 });
-		System.out.println("Before save " + ms.getSquareView());
-		dao.create(ms);
-		for (MagicSquareHibernate m : dao.getAll()) {
-			System.out.println(m.getSquareView());
-			dao.delete(m.getId());
+		MainMagicFinder.generateMagicVectors(3, 4);
+		for(MagicSquare ms : MainMagicFinder.getResult()) {
+			MagicSquareHibernate msh = m.getMagicSqaure(ms);
+			dao.create(msh);			
+		}
+		
+		for(MagicSquareHibernate db : dao.getAll()) {
+			m.getMagicSqaure(db).print();
 		}
 
 		SessionFactory sessFact = HibernateUtil.getSessionFactory();
