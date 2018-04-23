@@ -1,4 +1,4 @@
-package magic.find;
+package magic.finder;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -44,12 +44,13 @@ import magic.Subset;
  *
  */
 public class MainMagicFinder implements Runnable {
-	private static final int SIZE = 4;
-	private static final int THREADS = 4;
+	private static int sizeOfSquareToFind;
+	private static int threadsNumber;
+
 	private static int step = 100;
 
-	private static Map<Integer, List<int[]>> cache;
-	private static List<MagicSquare> magicSquareList;
+	private static Map<Integer, List<int[]>> cache = new HashMap<>();
+	private static List<MagicSquare> magicSquareList = new LinkedList<>();
 	private static List<MagicSquare> finalList = new LinkedList<>();
 
 	private static int threadNum = 0;
@@ -61,19 +62,21 @@ public class MainMagicFinder implements Runnable {
 		this.initialList = ms;
 	}
 
-	public static void main(String[] args) throws InterruptedException, IOException {
+	/**
+	 * 
+	 * @param squareSize
+	 *            that is size of magic squares to search
+	 * @param threads
+	 *            thats is number of threads
+	 */
+	public static void generateMagicVectors(int squareSize, int threads) {
+		sizeOfSquareToFind = squareSize;
+		threadsNumber = threads;
 		Set<int[]> magicVectors = new HashSet<>();
-		cache = new HashMap<>();
-		magicSquareList = new LinkedList<>();
-		int[] values = new int[SIZE * SIZE];
-		for (int i = 0; i < SIZE * SIZE; i++) {
-			values[i] = i + 1;
-		}
-		MagicSquare m3 = new MagicSquare(SIZE);
-
+		MagicSquare m3 = new MagicSquare(sizeOfSquareToFind);
+		int[] values = valueListForN();
 		Subset subset = new Subset();
-		subset.generateSubsets(values, values.length, SIZE);
-
+		subset.generateSubsets(values, values.length, sizeOfSquareToFind);
 		for (int[] sub : subset.subsets) {
 			if (m3.sum(sub) == m3.getMagicSum()) {
 				Permutations p = new Permutations();
@@ -83,22 +86,16 @@ public class MainMagicFinder implements Runnable {
 				}
 			}
 		}
+		cacheMagicVectors(magicVectors);
+		search();
+	}
 
-		for (int[] vector : magicVectors) {
-			if (cache.get(vector[0]) == null) {
-				cache.put(vector[0], new LinkedList<>());
-			}
-			cache.get(vector[0]).add(vector);
-			MagicSquare m = new MagicSquare(SIZE);
-			m.setRow(0, vector);
-			magicSquareList.add(m);
-		}
-		System.out.println("Before search : " + magicSquareList.size());
+	private static void search() {
 		long startTime = System.nanoTime();
 		boolean foo = true;
 		while (foo) {
-			Thread[] ts = new Thread[THREADS];
-			for (int i = 0; i < THREADS; i++) {
+			Thread[] ts = new Thread[threadsNumber];
+			for (int i = 0; i < threadsNumber; i++) {
 				List<MagicSquare> m = getPartition(magicSquareList);
 				if (m != null) {
 					Thread t = new Thread(new MainMagicFinder(m));
@@ -108,21 +105,49 @@ public class MainMagicFinder implements Runnable {
 				} else {
 					foo = false;
 				}
-				// searchForSquares(magicSquareList, index);
 			}
 
 			for (Thread t : ts) {
-				if (t != null)
-					t.join();
+				if (t != null) {
+					try {
+						t.join();
+					} catch (InterruptedException e) {
+						// TODO LOGGER
+						e.printStackTrace();
+					}
+				}
 			}
 		}
 		long endTime = System.nanoTime();
 		long duration = endTime - startTime;
 		System.out.println("Time sec : " + (double) duration / 1000000000.0);
-		MagicSquare.writeInFile("z://result//final-" + SIZE + ".txt", finalList);
-		// System.out.println("Total Magic vectors : " + magicVectors.size());
+		try {
+			MagicSquare.writeInFile("z://result//final-" + sizeOfSquareToFind + ".txt", finalList);
+		} catch (IOException e) {
+			// TODO LOGGER
+			e.printStackTrace();
+		}
 		System.out.println("Magic squres : " + finalList.size());
+	}
 
+	private static int[] valueListForN() {
+		int[] values = new int[sizeOfSquareToFind * sizeOfSquareToFind];
+		for (int i = 0; i < sizeOfSquareToFind * sizeOfSquareToFind; i++) {
+			values[i] = i + 1;
+		}
+		return values;
+	}
+
+	private static void cacheMagicVectors(Set<int[]> magicVectors) {
+		for (int[] vector : magicVectors) {
+			if (cache.get(vector[0]) == null) {
+				cache.put(vector[0], new LinkedList<>());
+			}
+			cache.get(vector[0]).add(vector);
+			MagicSquare m = new MagicSquare(sizeOfSquareToFind);
+			m.setRow(0, vector);
+			magicSquareList.add(m);
+		}
 	}
 
 	private static List<MagicSquare> getPartition(List<MagicSquare> ms) {
@@ -142,61 +167,48 @@ public class MainMagicFinder implements Runnable {
 		}
 	}
 
-	// private static void searchForSquares(List<MagicSquare> ms, int numberOfPart)
-	// {
-	// int partSize = ms.size() / THREADS;
-	// int begin = numberOfPart * partSize;
-	// int end = begin + partSize;
-	// List<MagicSquare> magicSquareList = new LinkedList<>(ms.subList(begin, end));
 	private static void searchForSquares(List<MagicSquare> ms) throws IOException {
-		int counter = 0;
+		// int counter = 0;
 		long startTime = System.nanoTime();
 		List<MagicSquare> magicSquareList = new LinkedList<>(ms);
 		Set<MagicSquare> toAdd = new HashSet<>();
 		Set<MagicSquare> fin = new HashSet<>();
-		for (int i = 0; i < SIZE; i++) {
+		for (int i = 0; i < sizeOfSquareToFind; i++) {
 			for (MagicSquare m : magicSquareList) {
-				// System.out.println(Thread.currentThread().getName() + " -> list : " +
-				// magicSquareList.size());
 				int start = m.getRow(0)[i];
 				for (int[] vector : cache.get(start)) {
 					m.setCol(i, vector);
 					if (m.noConflictsInMatrix()) {
-						counter++;
-						if (counter == 500000) {
-							//m.print();
-							System.gc();
-							counter = 0;
-							System.out.println("GC called!");
-						}
-						if (i != SIZE - 1) {
+						// counter++;
+						// if (counter == 500000) {
+						// System.gc();
+						// counter = 0;
+						// //System.out.println("GC called!");
+						// }
+						if (i != sizeOfSquareToFind - 1) {
 							boolean good = true;
-							for (int j = 1; j < SIZE; j++) {
+							for (int j = 1; j < sizeOfSquareToFind; j++) {
 								if (m.sum(m.getRow(j)) > m.getMagicSum()) {
 									good = false;
 									break;
 								}
 							}
 							if (good) {
-								MagicSquare t = new MagicSquare(SIZE);
-								for (int c = 0; c < SIZE; c++) {
+								MagicSquare t = new MagicSquare(sizeOfSquareToFind);
+								for (int c = 0; c < sizeOfSquareToFind; c++) {
 									int[] col = Arrays.copyOf(m.getCol(c), m.getCol(c).length);
 									t.setCol(c, col);
 								}
 								toAdd.add(t);
-								// System.out.println(Thread.currentThread().getName() + " -> No conflicts, add
-								// : " + t.squareToString());
 							}
 						} else {
 							if (m.isMagic()) {
-								MagicSquare t = new MagicSquare(SIZE);
-								for (int c = 0; c < SIZE; c++) {
+								MagicSquare t = new MagicSquare(sizeOfSquareToFind);
+								for (int c = 0; c < sizeOfSquareToFind; c++) {
 									int[] col = Arrays.copyOf(m.getCol(c), m.getCol(c).length);
 									t.setCol(c, col);
 								}
 								fin.add(t);
-								// System.out.println(
-								// Thread.currentThread().getName() + " ->Magic!, add : " + t.squareToString());
 							}
 						}
 					}
@@ -207,7 +219,7 @@ public class MainMagicFinder implements Runnable {
 			toAdd = new HashSet<>();
 		}
 		addAll(fin);
-		MagicSquare.writeInFile("z://result//size-" + SIZE + "-part" + getThread() + ".txt", fin);
+		MagicSquare.writeInFile("z://result//size-" + sizeOfSquareToFind + "-part" + getThread() + ".txt", fin);
 		long endTime = System.nanoTime();
 		long duration = endTime - startTime;
 		System.out.println("Found " + fin.size() + " magic squares in " + (double) duration / 1000000000.0 + " sec.");
@@ -219,7 +231,6 @@ public class MainMagicFinder implements Runnable {
 
 	@Override
 	public void run() {
-
 		try {
 			searchForSquares(this.initialList);
 		} catch (IOException e) {
