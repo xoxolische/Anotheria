@@ -12,7 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * This class helps to exchange commands and files beetween server and client
+ * This class helps to exchange commands and files between server and client
  * 
  * @author Nikita Pavlov
  *
@@ -40,7 +40,7 @@ public class DataTransfer implements Serializable {
 	}
 
 	/**
-	 * This method
+	 * This method sends response to the client
 	 */
 	public void send() {
 		if (this.data instanceof List) {
