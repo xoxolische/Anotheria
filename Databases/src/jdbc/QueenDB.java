@@ -11,6 +11,9 @@ import java.sql.SQLException;
  */
 public class QueenDB {
 
+	/**
+	 * INSERT SQL QUERY
+	 */
 	private static final String INSERT = "INSERT INTO queens (state) VALUES (?)";
 	private PreparedStatement prep;
 

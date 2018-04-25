@@ -2,9 +2,19 @@ package model;
 
 import magic.MagicSquare;
 
+/**
+ * Class mapper for MagicSquare and MagicSquareEntity
+ * @author Nikita Pavlov
+ *
+ */
 public class MSMapper {
 
-	public MagicSquare getMagicSqaure(MagicSquareHibernate msHib) {
+	/**
+	 * Transforms MagicSquareEntity to MagicSquare
+	 * @param msHib MagicSquareEntity
+	 * @return MagicSquare
+	 */
+	public MagicSquare getMagicSqaure(MagicSquareEntity msHib) {
 		String[] a = msHib.getSquareView().split(" ");
 		int size = (int) Math.sqrt(a.length);
 		MagicSquare ms = new MagicSquare(size);
@@ -15,9 +25,13 @@ public class MSMapper {
 		ms.setSquare(square);
 		return ms;
 	}
-	
-	public MagicSquareHibernate getMagicSqaure(MagicSquare ms) {
-		MagicSquareHibernate msHib = new MagicSquareHibernate();
+	/**
+	 * Transforms MagicSquare to MagicSquareEntity
+	 * @param ms MagicSquare
+	 * @return MagicSquareEntity
+	 */
+	public MagicSquareEntity getMagicSqaure(MagicSquare ms) {
+		MagicSquareEntity msHib = new MagicSquareEntity();
 		msHib.setSquareView(ms.squareToDb());
 		msHib.setCache(ms.hashCode());
 		return msHib;

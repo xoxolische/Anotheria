@@ -12,7 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import hibernate.HibernateUtil;
-import model.MagicSquareHibernate;
+import model.MagicSquareEntity;
 
 /**
  * Dao implementation for MagicSquareHibernate entity
@@ -20,11 +20,11 @@ import model.MagicSquareHibernate;
  * @author Nikita Pavlov
  *
  */
-public class MagicSquareDaoImpl extends DaoImpl<MagicSquareHibernate> {
+public class MagicSquareDaoImpl extends DaoImpl<MagicSquareEntity> {
 	private static final Logger LOGGER = LoggerFactory.getLogger(MagicSquareDaoImpl.class);
 
 	public MagicSquareDaoImpl() {
-		super(MagicSquareHibernate.class);
+		super(MagicSquareEntity.class);
 	}
 
 	/**
@@ -35,16 +35,17 @@ public class MagicSquareDaoImpl extends DaoImpl<MagicSquareHibernate> {
 	 *            pattern
 	 * @return
 	 */
-	public List<MagicSquareHibernate> search(MagicSquareHibernate pattern) {
+	public List<MagicSquareEntity> search(MagicSquareEntity pattern) {
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 		session.beginTransaction();
 		try {
 			CriteriaBuilder builder = session.getCriteriaBuilder();
-			CriteriaQuery<MagicSquareHibernate> query = builder.createQuery(MagicSquareHibernate.class);
-			Root<MagicSquareHibernate> root = query.from(MagicSquareHibernate.class);
+			CriteriaQuery<MagicSquareEntity> query = builder.createQuery(MagicSquareEntity.class);
+			Root<MagicSquareEntity> root = query.from(MagicSquareEntity.class);
+			//System.out.println(pattern.getSquareView());
 			query.select(root).where(builder.like(root.get("squareView"), "%" + pattern.getSquareView() + "%"));
-			Query<MagicSquareHibernate> q = session.createQuery(query);
-			List<MagicSquareHibernate> l = q.getResultList();
+			Query<MagicSquareEntity> q = session.createQuery(query);
+			List<MagicSquareEntity> l = q.getResultList();
 			session.getTransaction().commit();
 			return l;
 		} catch (Exception e) {

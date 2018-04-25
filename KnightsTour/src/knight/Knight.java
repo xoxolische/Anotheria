@@ -217,12 +217,20 @@ public class Knight {
 
 	public boolean isClosedTour(Board b) {
 		int[] a = b.getBoard();
-		int a4 = b.getSize() * b.getSize() - 1;
-		if (a[0] == 1 && a[b.getSize() - 1] == 1 && a[a4] == 1 && a[a4 - b.getSize() + 1] == 1 && nextMoveIsStart(b)) {
-			// b.print(this);
-			return true;
+//		int a4 = b.getSize() * b.getSize() - 1;
+//		if (a[0] == 1 && a[b.getSize() - 1] == 1 && a[a4] == 1 && a[a4 - b.getSize() + 1] == 1 && nextMoveIsStart(b)) {
+//			// b.print(this);
+//			return true;
+//		}
+		b.setVisited(this.getPosition(), true);
+		for(int i : a) {
+			if(i == 0) {
+				b.setVisited(this.getPosition(), false);
+				return false;
+			}
 		}
-		return false;
+		b.setVisited(this.getPosition(), true);
+		return true;
 	}
 
 	private boolean nextMoveIsStart(Board b) {

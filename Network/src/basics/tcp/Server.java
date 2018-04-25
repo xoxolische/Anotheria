@@ -1,10 +1,10 @@
 package basics.tcp;
 
-import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.Scanner;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -55,8 +55,8 @@ public class Server {
 			Socket con = socket.accept();
 			System.out.println("Connection established.");
 			InputStream sin = con.getInputStream();
-			DataInputStream in = new DataInputStream(sin);
-			String line = in.readUTF();
+			Scanner in = new Scanner(sin);
+			String line = in.nextLine();
 			System.out.println("Client : " + line);
 			in.close();
 			con.close();

@@ -14,7 +14,7 @@ import advanced.Server;
  */
 public class GETCommand extends Command {
 
-	private Pattern p;
+	private Pattern p = Pattern.compile("[G][E][T][\\s].{1,255}");
 	private Server server;
 	private String memo;
 
@@ -23,7 +23,6 @@ public class GETCommand extends Command {
 	 * @param server entity
 	 */
 	public GETCommand(Server server) {
-		p = Pattern.compile("[G][E][T][\\s].{1,255}");
 		this.server = server;
 	}
 

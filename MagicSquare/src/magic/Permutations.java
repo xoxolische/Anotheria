@@ -74,10 +74,7 @@ public class Permutations {
 			int[] arrNewTail = decrementArr(arrBuf);
 			if (i != 0) {
 				int[] a = concat(arrNewHead, arrNewTail);
-				// if (sumOfArray(a) == 65) {
-				// printArr(arrNewHead, arrNewTail);
 				this.permutationsList.add(a);
-				// }
 			}
 
 			shifter(arrNewHead, arrNewTail);
@@ -90,7 +87,6 @@ public class Permutations {
 			reverse(arr, shift, arr.length - 1);
 			reverse(arr, 0, arr.length - 1);
 		}
-
 	}
 
 	private int[] decrementArr(int[] arr) {
@@ -121,22 +117,6 @@ public class Permutations {
 		arrBuf[firstCycleElement] = arrBuf[secondCycleElement];
 		arrBuf[secondCycleElement] = buf;
 	}
-
-	// private void printArr(int[] arrHead, int[] arrTail) {
-	// System.out.print(++counter + ": ");
-	// if (arrHead != null && arrHead.length != 0) {
-	// for (int item : arrHead) {
-	// System.out.print(" " + item);
-	// }
-	// }
-	// if (arrTail != null && arrTail.length != 0) {
-	// for (int item : arrTail) {
-	// System.out.print(" " + item);
-	// }
-	// }
-	//
-	// System.out.println();
-	// }
 
 	private int[] concat(int[] arrHead, int[] arrTail) {
 		int[] res = null;

@@ -65,7 +65,6 @@ public class Solution {
 
 	}
 
-	// check if current col conflicts with previous
 	private boolean isValid(int col, int stRow, String[] rows) {
 		for (int i = 0; i < stRow; i++) {
 			int qCol = rows[i].indexOf(QUEEN);
@@ -84,13 +83,17 @@ public class Solution {
 		}
 
 		return true;
-
 	}
 
 	public List<String[]> getResult() {
 		return result;
 	}
 
+	/**
+	 * Prepares result for inserting to database
+	 * 
+	 * @return prepared for insertion array of results
+	 */
 	public String[] getPreparedResult() {
 		String[] preparedResult = new String[this.result.size()];
 		String preparedString;
@@ -104,18 +107,6 @@ public class Solution {
 			c++;
 		}
 		return preparedResult;
-	}
-
-	public String resultToString() {
-		String resultString = "";
-		for (String[] a : this.result) {
-			for (String s : a) {
-				resultString += s + "\r\n";
-			}
-			resultString += "\r\n";
-		}
-
-		return resultString;
 	}
 
 }

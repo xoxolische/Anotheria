@@ -14,7 +14,7 @@ import advanced.Server;
  */
 public class DIRCommand extends Command {
 
-	private Pattern p;
+	private static Pattern p = Pattern.compile("[D][I][R]");
 	private Server server;
 
 	/**
@@ -23,7 +23,6 @@ public class DIRCommand extends Command {
 	 *            entity
 	 */
 	public DIRCommand(Server server) {
-		p = Pattern.compile("[D][I][R]");
 		this.server = server;
 	}
 

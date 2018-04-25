@@ -6,7 +6,7 @@ import hibernate.HibernateUtil;
 import magic.MagicSquare;
 import magic.finder.MainMagicFinder;
 import model.MSMapper;
-import model.MagicSquareHibernate;
+import model.MagicSquareEntity;
 
 /**
  * Main class for interaction with database.
@@ -21,11 +21,11 @@ public class Main {
 		MagicSquareDaoImpl dao = new MagicSquareDaoImpl();
 		MainMagicFinder.generateMagicVectors(3, 4);
 		for(MagicSquare ms : MainMagicFinder.getResult()) {
-			MagicSquareHibernate msh = m.getMagicSqaure(ms);
+			MagicSquareEntity msh = m.getMagicSqaure(ms);
 			dao.create(msh);			
 		}
 		
-		for(MagicSquareHibernate db : dao.getAll()) {
+		for(MagicSquareEntity db : dao.getAll()) {
 			m.getMagicSqaure(db).print();
 		}
 

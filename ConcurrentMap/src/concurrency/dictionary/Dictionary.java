@@ -16,6 +16,9 @@ import java.util.Map;
 public class Dictionary {
 
 	private Map<String, String> d;
+	/**
+	 * Array of words
+	 */
 	private static String[] words = getArray(Const.TEST_1_466544);
 
 	/**

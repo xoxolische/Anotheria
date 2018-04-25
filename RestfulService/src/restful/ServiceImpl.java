@@ -19,7 +19,7 @@ import org.slf4j.LoggerFactory;
 import dao.impl.MagicSquareDaoImpl;
 import magic.MagicSquare;
 import model.MSMapper;
-import model.MagicSquareHibernate;
+import model.MagicSquareEntity;
 
 /**
  * MagicSquare service implementation
@@ -28,7 +28,7 @@ import model.MagicSquareHibernate;
  *
  */
 @Path("/magicSquare")
-public class ServiceImpl implements Service<MagicSquareHibernate> {
+public class ServiceImpl implements Service<MagicSquareEntity> {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(ServiceImpl.class);
 	
@@ -40,7 +40,7 @@ public class ServiceImpl implements Service<MagicSquareHibernate> {
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Override
-	public Response create(MagicSquareHibernate entity) {
+	public Response create(MagicSquareEntity entity) {
 		MagicSquare ms = mapper.getMagicSqaure(entity);
 		try {
 			dao.create(entity);
@@ -56,9 +56,9 @@ public class ServiceImpl implements Service<MagicSquareHibernate> {
 	@Path("/{id}")
 	@Override
 	public Response get(@PathParam(value = "id") long id) {
-		MagicSquareHibernate e = dao.get(id);
-		MagicSquare ms = mapper.getMagicSqaure(e);
+		MagicSquareEntity e = dao.get(id);
 		if (e != null) {
+			MagicSquare ms = mapper.getMagicSqaure(e);
 			return Response.status(200).entity(ms.squareToPageView()).build();
 		} else {
 			return Response.status(200).entity("Square with such id does not exists!").build();
@@ -68,7 +68,7 @@ public class ServiceImpl implements Service<MagicSquareHibernate> {
 	@PUT
 	@Path("/update")
 	@Override
-	public Response update(MagicSquareHibernate entity) {
+	public Response update(MagicSquareEntity entity) {
 		try {
 			dao.update(entity);
 			return Response.status(200).entity("Square updated successfuly!").build();
@@ -90,10 +90,10 @@ public class ServiceImpl implements Service<MagicSquareHibernate> {
 	@GET
 	@Path("/getAll")
 	public Response getAll() {
-		List<MagicSquareHibernate> l = dao.getAll();
+		List<MagicSquareEntity> l = dao.getAll();
 		if (l != null) {
 			String view = "";
-			for (MagicSquareHibernate m : l) {
+			for (MagicSquareEntity m : l) {
 				view += m.toString() + "<br>";
 			}
 			return Response.status(200).entity(view).build();
@@ -108,11 +108,11 @@ public class ServiceImpl implements Service<MagicSquareHibernate> {
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Override
-	public Response search(MagicSquareHibernate pattern) {
-		List<MagicSquareHibernate> l = dao.search(pattern);
+	public Response search(MagicSquareEntity pattern) {
+		List<MagicSquareEntity> l = dao.search(pattern);
 		if (l != null) {
 			String view = "Squares: <br>";
-			for (MagicSquareHibernate m : l) {
+			for (MagicSquareEntity m : l) {
 				view += m.toString() + "<br>";
 			}
 			return Response.status(200).entity(view).build();

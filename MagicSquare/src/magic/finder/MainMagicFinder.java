@@ -44,18 +44,43 @@ import magic.Subset;
  *
  */
 public class MainMagicFinder implements Runnable {
+	/**
+	 * Size of our square side
+	 */
 	private static int sizeOfSquareToFind;
+	/**
+	 * Number of threads
+	 */
 	private static int threadsNumber;
-
+	/**
+	 * Partition size from our vectors List for 1 thread
+	 */
 	private static int step = 100;
 
+	/**
+	 * Contains cached vectors (arrays) as K, V where K is 1st number of vector and
+	 * V is the vector
+	 */
 	private static Map<Integer, List<int[]>> cache = new HashMap<>();
+	/**
+	 * Contains initial MSs
+	 */
 	private static List<MagicSquare> magicSquareList = new LinkedList<>();
+	/**
+	 * Contains final representation of all MSs
+	 */
 	private static List<MagicSquare> finalList = new LinkedList<>();
-
+	/**
+	 * Just serial number of thread
+	 */
 	private static int threadNum = 0;
+	/**
+	 * List for partition of MS
+	 */
 	private List<MagicSquare> initialList;
-
+	/**
+	 * Counter of steps
+	 */
 	private static int current = 0;
 
 	public MainMagicFinder(List<MagicSquare> ms) {
@@ -112,7 +137,6 @@ public class MainMagicFinder implements Runnable {
 					try {
 						t.join();
 					} catch (InterruptedException e) {
-						// TODO LOGGER
 						e.printStackTrace();
 					}
 				}
@@ -124,7 +148,6 @@ public class MainMagicFinder implements Runnable {
 		try {
 			MagicSquare.writeInFile("z://result//final-" + sizeOfSquareToFind + ".txt", finalList);
 		} catch (IOException e) {
-			// TODO LOGGER
 			e.printStackTrace();
 		}
 		System.out.println("Magic squres : " + finalList.size());
@@ -242,8 +265,8 @@ public class MainMagicFinder implements Runnable {
 		threadNum++;
 		return threadNum;
 	}
-	
-	public static List<MagicSquare> getResult(){
+
+	public static List<MagicSquare> getResult() {
 		return finalList;
 	}
 }

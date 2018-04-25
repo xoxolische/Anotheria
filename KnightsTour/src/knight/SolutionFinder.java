@@ -49,6 +49,10 @@ public class SolutionFinder {
 				} else {
 					if (k.isClosedTour(b)) {
 						printClosedTour();
+						b.print(k);
+					}else {
+						System.out.println("Not closed!");
+						b.print(k);
 					}
 					if (possibleMoves.empty()) {
 						System.out.println("The end.");
@@ -65,9 +69,11 @@ public class SolutionFinder {
 
 	private void printClosedTour() {
 		for (Position p : k.getMovesHistory()) {
-			System.out.print(p.toChessNotation() + " -> ");
+			System.out.print(p.toString() + " -> ");
 		}
-		System.out.println(k.memo.toChessNotation());
+		if(k.memo != null) {			
+			System.out.println(k.memo.toChessNotation());
+		}
 		System.out.println("");
 	}
 }

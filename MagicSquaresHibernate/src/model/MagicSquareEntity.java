@@ -20,7 +20,7 @@ import org.hibernate.annotations.UpdateTimestamp;
  */
 @Entity
 @Table(name = "magic_squares")
-public class MagicSquareHibernate {
+public class MagicSquareEntity {
 	@Id
 	@Column(name = "id", insertable = false, updatable = false)
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -70,6 +70,7 @@ public class MagicSquareHibernate {
 
 	public void setSquareView(String squareView) {
 		this.squareView = squareView;
+		this.cache = squareView.hashCode();
 	}
 
 	public int getCache() {
@@ -100,7 +101,7 @@ public class MagicSquareHibernate {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		MagicSquareHibernate other = (MagicSquareHibernate) obj;
+		MagicSquareEntity other = (MagicSquareEntity) obj;
 		if (cache != other.cache)
 			return false;
 		if (createdAt == null) {

@@ -14,7 +14,7 @@ import advanced.Server;
  */
 public class PUTCommand extends Command {
 
-	private Pattern p;
+	private Pattern p = Pattern.compile("[P][U][T][\\s].{1,255}");
 	private Server server;
 	private String file;
 
@@ -24,7 +24,6 @@ public class PUTCommand extends Command {
 	 *            entity
 	 */
 	public PUTCommand(Server server) {
-		p = Pattern.compile("[P][U][T][\\s].{1,255}");
 		this.server = server;
 	}
 
