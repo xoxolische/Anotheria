@@ -15,6 +15,7 @@ public class Position {
 		}
 	}
 
+	public Position from;
 	private int x;
 	private int y;
 	// private boolean locked;

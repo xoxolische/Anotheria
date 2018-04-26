@@ -1,6 +1,14 @@
 package knight;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 import java.util.Stack;
 
 /**
@@ -10,6 +18,8 @@ import java.util.Stack;
  *
  */
 public class SolutionFinder {
+
+	private static int counter = 1;
 
 	private Stack<Position> possibleMoves;
 	private Board b;
@@ -31,6 +41,7 @@ public class SolutionFinder {
 	private void fillStack(List<Position> list) {
 		for (Position p : list) {
 			possibleMoves.push(p);
+			counter++;
 		}
 	}
 
@@ -38,42 +49,47 @@ public class SolutionFinder {
 	 * Search for closed tours and print them out to console
 	 */
 	public void search() {
+		Set<List<Position>> closed = new HashSet<>();
 		fillStack(k.possibleMoves(b));
+		k.move(k.getPosition(), b);
+		int c= 0;
 		while (!possibleMoves.empty()) {
 			Position to = possibleMoves.pop();
-			if (k.canMove(to, b)) {
-				k.move(to, b);
-				List<Position> movesFromCurrentPosition = k.possibleMoves(b);
-				if (movesFromCurrentPosition.size() != 0) {
-					fillStack(movesFromCurrentPosition);
+			k.move(to, b);
+			List<Position> movesFromCurrentPosition = k.possibleMoves(b);
+			if (movesFromCurrentPosition.size() != 0) {
+				fillStack(movesFromCurrentPosition);
+			} else {
+				if (k.isClosedTour(b)) {
+					closed.add(k.getMovesHistory());
+					c++;
+					Printer.l(k.getMovesHistoryString());
 				} else {
-					if (k.isClosedTour(b)) {
-						printClosedTour();
-						b.print(k);
-					}else {
-						System.out.println("Not closed!");
-						b.print(k);
-					}
-					if (possibleMoves.empty()) {
-						System.out.println("The end.");
+					
+				}
+				if (possibleMoves.empty()) {
+					System.out.println("The end.");
+				} else {
+					Position p = possibleMoves.pop();
+					k.goBackUntillReacheble(p, b);
+					possibleMoves.push(p);
+					if(!k.possibleMoves(b).contains(p)) {
 						break;
-					} else {
-						Position p = possibleMoves.pop();
-						k.goBackUntillReacheble(p, b);
-						possibleMoves.push(p);
 					}
 				}
 			}
 		}
+		System.out.println(c);
+		System.out.println(closed.size());
 	}
 
-	private void printClosedTour() {
-		for (Position p : k.getMovesHistory()) {
-			System.out.print(p.toString() + " -> ");
+	public static void writeInFile(String path, Collection<Board> b) throws IOException {
+
+		BufferedWriter writer = new BufferedWriter(new FileWriter(path));
+		for (Board bb : b) {
+			writer.write(Arrays.toString(bb.getBoard()) + "\r\n");
 		}
-		if(k.memo != null) {			
-			System.out.println(k.memo.toChessNotation());
-		}
-		System.out.println("");
+
+		writer.close();
 	}
 }
