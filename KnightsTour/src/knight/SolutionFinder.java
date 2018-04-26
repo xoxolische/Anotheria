@@ -40,10 +40,12 @@ public class SolutionFinder {
 	 * Search for closed tours and print them out to console
 	 */
 	public void search() {
+		Position pop = null;
 		Set<List<Position>> closed = new HashSet<>();
 		fillStack(k.possibleMoves(b));
 		k.move(k.getPosition(), b);
 		while (!possibleMoves.empty()) {
+			long start = System.nanoTime();
 			Position to = possibleMoves.pop();
 			k.move(to, b);
 			List<Position> movesFromCurrentPosition = k.possibleMoves(b);
@@ -52,21 +54,25 @@ public class SolutionFinder {
 			} else {
 				if (k.isClosedTour(b)) {
 					closed.add(k.getMovesHistory());
-					Printer.l(k.getMovesHistoryString());
+					//Printer.l(k.getMovesHistoryString());
+					//System.out.println("!");
 				} else {
 					
 				}
 				if (possibleMoves.empty()) {
 					System.out.println("The end.");
 				} else {
-					Position p = possibleMoves.pop();
-					k.goBackUntillReacheble(p, b);
-					possibleMoves.push(p);
-					if(!k.possibleMoves(b).contains(p)) {
+					pop = possibleMoves.pop();
+					k.goBackUntillReacheble(pop, b);
+					possibleMoves.push(pop);
+					if(!k.possibleMoves(b).contains(pop)) {
 						break;
 					}
 				}
 			}
+			long end = System.nanoTime();
+			long duration = end - start;
+			//System.out.printf("Time sec : %f\n" , (double) duration / 1000000000.0);
 		}
 		System.out.println(closed.size());
 	}

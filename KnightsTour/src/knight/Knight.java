@@ -1,7 +1,9 @@
 package knight;
 
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * This class represents the Knight.
@@ -13,6 +15,8 @@ public class Knight {
 
 	private Position p;
 	private List<Position> positions;
+	private static Map<Position, List<Position>> possibleMovesCache = new HashMap<>();
+	private static List<Position> pos = new LinkedList<>();
 
 	/**
 	 * Constructor with coordinates. X and Y as parameters start with 0.
@@ -27,6 +31,102 @@ public class Knight {
 	public Knight(int x, int y) {
 		this.p = new Position(x, y);
 		this.positions = new LinkedList<>();
+	}
+
+	/**
+	 * Retrieves from memory possible moves from current position, if in memory not
+	 * present List of Positions we generate and add it.
+	 * 
+	 * @param b
+	 *            board
+	 * @return List of possible positions to move.
+	 */
+	public List<Position> possibleMoves(Board b) {
+		if (possibleMovesCache.get(this.p) == null) {
+			System.out.println("added from " + this.p.toChessNotation());
+			possibleMovesCache.put(this.p, movesFromCurrentLocation(b));
+		}
+		//List<Position> p = new LinkedList<>();
+		pos.clear();
+		for (Position possible : possibleMovesCache.get(this.p)) {
+			if (!b.isVisited(possible)) {
+				possible.from = this.p;
+				pos.add(possible);
+			}
+		}
+
+		return pos;
+	}
+
+	private List<Position> movesFromCurrentLocation(Board b) {
+		List<Position> possibleMoves = new LinkedList<>();
+		Position newPos;
+
+		newPos = new Position(this.p.getX() + 2, this.p.getY() + 1);
+		// newPos.from = this.p;
+		// if (onBoard(b, newPos) && !b.isVisited(newPos)) {
+		if (onBoard(b, newPos)) {
+			possibleMoves.add(newPos);
+			// System.out.println("!");
+		}
+		// }
+
+		newPos = new Position(this.p.getX() + 2, this.p.getY() - 1);
+		// newPos.from = this.p;
+		// if (onBoard(b, newPos) && !b.isVisited(newPos)) {
+		if (onBoard(b, newPos)) {
+			possibleMoves.add(newPos);
+		}
+		// }
+
+		newPos = new Position(this.p.getX() + 1, this.p.getY() - 2);
+		// newPos.from = this.p;
+		// if (onBoard(b, newPos) && !b.isVisited(newPos)) {
+		if (onBoard(b, newPos)) {
+			possibleMoves.add(newPos);
+		}
+		// }
+
+		newPos = new Position(this.p.getX() - 1, this.p.getY() - 2);
+		// newPos.from = this.p;
+		// if (onBoard(b, newPos) && !b.isVisited(newPos)) {
+		if (onBoard(b, newPos)) {
+			possibleMoves.add(newPos);
+		}
+		// }
+
+		newPos = new Position(this.p.getX() - 2, this.p.getY() - 1);
+		// newPos.from = this.p;
+		// if (onBoard(b, newPos) && !b.isVisited(newPos)) {
+		if (onBoard(b, newPos)) {
+			possibleMoves.add(newPos);
+		}
+		// }
+		//
+		newPos = new Position(this.p.getX() - 2, this.p.getY() + 1);
+		// newPos.from = this.p;
+		// if (onBoard(b, newPos) && !b.isVisited(newPos)) {
+		if (onBoard(b, newPos)) {
+			possibleMoves.add(newPos);
+		}
+		// }
+
+		newPos = new Position(this.p.getX() - 1, this.p.getY() + 2);
+		// newPos.from = this.p;
+		// if (onBoard(b, newPos) && !b.isVisited(newPos)) {
+		if (onBoard(b, newPos)) {
+			possibleMoves.add(newPos);
+		}
+		/// }
+		//
+		newPos = new Position(this.p.getX() + 1, this.p.getY() + 2);
+		// newPos.from = this.p;
+		// if (onBoard(b, newPos) && !b.isVisited(newPos)) {
+		if (onBoard(b, newPos)) {
+			possibleMoves.add(newPos);
+		}
+		// }
+		return possibleMoves;
 	}
 
 	/**
@@ -57,67 +157,6 @@ public class Knight {
 		b.setVisited(this.p, true);
 		this.positions.add(to);
 		this.p = to;// new Position(to.getX(), to.getY());
-	}
-
-	/**
-	 * 
-	 * @param b
-	 *            board
-	 * @return List of possible positions to move.
-	 */
-	public List<Position> possibleMoves(Board b) {
-		List<Position> possibleMoves = new LinkedList<>();
-		Position newPos;
-
-		newPos = new Position(this.p.getX() + 2, this.p.getY() + 1);
-		newPos.from = this.p;
-		if (onBoard(b, newPos) && !b.isVisited(newPos)) {
-			possibleMoves.add(newPos);
-		}
-
-		newPos = new Position(this.p.getX() + 2, this.p.getY() - 1);
-		newPos.from = this.p;
-		if (onBoard(b, newPos) && !b.isVisited(newPos)) {
-			possibleMoves.add(newPos);
-		}
-
-		newPos = new Position(this.p.getX() + 1, this.p.getY() - 2);
-		newPos.from = this.p;
-		if (onBoard(b, newPos) && !b.isVisited(newPos)) {
-			possibleMoves.add(newPos);
-		}
-
-		newPos = new Position(this.p.getX() - 1, this.p.getY() - 2);
-		newPos.from = this.p;
-		if (onBoard(b, newPos) && !b.isVisited(newPos)) {
-			possibleMoves.add(newPos);
-		}
-
-		newPos = new Position(this.p.getX() - 2, this.p.getY() - 1);
-		newPos.from = this.p;
-		if (onBoard(b, newPos) && !b.isVisited(newPos)) {
-			possibleMoves.add(newPos);
-		}
-
-		newPos = new Position(this.p.getX() - 2, this.p.getY() + 1);
-		newPos.from = this.p;
-		if (onBoard(b, newPos) && !b.isVisited(newPos)) {
-			possibleMoves.add(newPos);
-		}
-
-		newPos = new Position(this.p.getX() - 1, this.p.getY() + 2);
-		newPos.from = this.p;
-		if (onBoard(b, newPos) && !b.isVisited(newPos)) {
-			possibleMoves.add(newPos);
-		}
-
-		newPos = new Position(this.p.getX() + 1, this.p.getY() + 2);
-		newPos.from = this.p;
-		if (onBoard(b, newPos) && !b.isVisited(newPos)) {
-			possibleMoves.add(newPos);
-		}
-
-		return possibleMoves;
 	}
 
 	private boolean onBoard(Board b, Position p) {
