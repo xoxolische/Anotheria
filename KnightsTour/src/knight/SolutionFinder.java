@@ -1,12 +1,6 @@
 package knight;
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 import java.util.Stack;
@@ -18,8 +12,6 @@ import java.util.Stack;
  *
  */
 public class SolutionFinder {
-
-	private static int counter = 1;
 
 	private Stack<Position> possibleMoves;
 	private Board b;
@@ -41,7 +33,6 @@ public class SolutionFinder {
 	private void fillStack(List<Position> list) {
 		for (Position p : list) {
 			possibleMoves.push(p);
-			counter++;
 		}
 	}
 
@@ -52,7 +43,6 @@ public class SolutionFinder {
 		Set<List<Position>> closed = new HashSet<>();
 		fillStack(k.possibleMoves(b));
 		k.move(k.getPosition(), b);
-		int c= 0;
 		while (!possibleMoves.empty()) {
 			Position to = possibleMoves.pop();
 			k.move(to, b);
@@ -62,7 +52,6 @@ public class SolutionFinder {
 			} else {
 				if (k.isClosedTour(b)) {
 					closed.add(k.getMovesHistory());
-					c++;
 					Printer.l(k.getMovesHistoryString());
 				} else {
 					
@@ -79,17 +68,6 @@ public class SolutionFinder {
 				}
 			}
 		}
-		System.out.println(c);
 		System.out.println(closed.size());
-	}
-
-	public static void writeInFile(String path, Collection<Board> b) throws IOException {
-
-		BufferedWriter writer = new BufferedWriter(new FileWriter(path));
-		for (Board bb : b) {
-			writer.write(Arrays.toString(bb.getBoard()) + "\r\n");
-		}
-
-		writer.close();
 	}
 }

@@ -13,7 +13,6 @@ public class Knight {
 
 	private Position p;
 	private List<Position> positions;
-	private Position previous;
 
 	/**
 	 * Constructor with coordinates. X and Y as parameters start with 0.
@@ -63,86 +62,55 @@ public class Knight {
 	/**
 	 * 
 	 * @param b
+	 *            board
 	 * @return List of possible positions to move.
 	 */
 	public List<Position> possibleMoves(Board b) {
 		List<Position> possibleMoves = new LinkedList<>();
 		Position newPos;
-		/*
-		 * & - knight X - position to go 1 - visited
-		 * 
-		 * 0 1 2 3 4 5 6 7 x 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 2 0 0 0 0 0 0 0 0 3 0 0
-		 * 0 0 & 0 0 0 4 0 0 0 0 0 0 X 0 5 0 0 0 0 0 0 0 0 6 0 0 0 0 0 0 0 0 7 0 0 0 0 0
-		 * 0 0 0 y
-		 */
+
 		newPos = new Position(this.p.getX() + 2, this.p.getY() + 1);
 		newPos.from = this.p;
 		if (onBoard(b, newPos) && !b.isVisited(newPos)) {
 			possibleMoves.add(newPos);
 		}
-		/*
-		 * 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 X 0 0 0 0 0 & 0 0 0 0 0 0 0 0 0 1
-		 * 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
-		 */
+
 		newPos = new Position(this.p.getX() + 2, this.p.getY() - 1);
 		newPos.from = this.p;
 		if (onBoard(b, newPos) && !b.isVisited(newPos)) {
 			possibleMoves.add(newPos);
 		}
-		/*
-		 * 0 0 0 0 0 0 0 0 0 0 0 0 0 X 0 0 0 0 0 0 0 0 1 0 0 0 0 0 & 0 0 0 0 0 0 0 0 0 1
-		 * 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
-		 */
+
 		newPos = new Position(this.p.getX() + 1, this.p.getY() - 2);
 		newPos.from = this.p;
 		if (onBoard(b, newPos) && !b.isVisited(newPos)) {
 			possibleMoves.add(newPos);
 		}
-		/*
-		 * 0 0 0 0 0 0 0 0 0 0 0 X 0 1 0 0 0 0 0 0 0 0 1 0 0 0 0 0 & 0 0 0 0 0 0 0 0 0 1
-		 * 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
-		 */
+
 		newPos = new Position(this.p.getX() - 1, this.p.getY() - 2);
 		newPos.from = this.p;
 		if (onBoard(b, newPos) && !b.isVisited(newPos)) {
 			possibleMoves.add(newPos);
 		}
 
-		/*
-		 * 0 0 0 0 0 0 0 0 0 0 0 1 0 1 0 0 0 0 X 0 0 0 1 0 0 0 0 0 & 0 0 0 0 0 0 0 0 0 1
-		 * 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
-		 */
 		newPos = new Position(this.p.getX() - 2, this.p.getY() - 1);
 		newPos.from = this.p;
 		if (onBoard(b, newPos) && !b.isVisited(newPos)) {
 			possibleMoves.add(newPos);
 		}
 
-		/*
-		 * 0 0 0 0 0 0 0 0 0 0 0 1 0 1 0 0 0 0 1 0 0 0 1 0 0 0 0 0 & 0 0 0 0 0 X 0 0 0 1
-		 * 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
-		 */
 		newPos = new Position(this.p.getX() - 2, this.p.getY() + 1);
 		newPos.from = this.p;
 		if (onBoard(b, newPos) && !b.isVisited(newPos)) {
 			possibleMoves.add(newPos);
 		}
 
-		/*
-		 * 0 0 0 0 0 0 0 0 0 0 0 1 0 1 0 0 0 0 1 0 0 0 1 0 0 0 0 0 & 0 0 0 0 0 1 0 0 0 1
-		 * 0 0 0 0 X 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
-		 */
 		newPos = new Position(this.p.getX() - 1, this.p.getY() + 2);
 		newPos.from = this.p;
-		// System.out.println("???" + newPos.toString());
 		if (onBoard(b, newPos) && !b.isVisited(newPos)) {
 			possibleMoves.add(newPos);
 		}
 
-		/*
-		 * 0 0 0 0 0 0 0 0 0 0 0 1 0 1 0 0 0 0 1 0 0 0 1 0 0 0 0 0 & 0 0 0 0 0 1 0 0 0 1
-		 * 0 0 0 0 1 0 X 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
-		 */
 		newPos = new Position(this.p.getX() + 1, this.p.getY() + 2);
 		newPos.from = this.p;
 		if (onBoard(b, newPos) && !b.isVisited(newPos)) {
@@ -161,17 +129,13 @@ public class Knight {
 		return false;
 	}
 
-	public boolean canMove(Position to, Board b) {
-		if (onBoard(b, to) && !b.isVisited(to)) {
-			return true;
-		}
-		return false;
-	}
-
-	public Position getLast() {
-		return previous;
-	}
-
+	/**
+	 * Check if tour is closed
+	 * 
+	 * @param b
+	 *            board
+	 * @return true if closed, otherwise false
+	 */
 	public boolean isClosedTour(Board b) {
 		b.setVisited(this.getPosition(), true);
 		int[] a = b.getBoard();
@@ -207,10 +171,10 @@ public class Knight {
 		}
 	}
 
-	// private void removeFromHistory(List<Position> toRemove) {
-	// this.positions.removeAll(toRemove);
-	// }
-
+	/**
+	 * 
+	 * @return Knight`s moves history inline
+	 */
 	public String getMovesHistoryString() {
 		String s = "";
 		for (Position p : this.getMovesHistory()) {

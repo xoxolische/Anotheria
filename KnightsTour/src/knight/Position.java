@@ -18,7 +18,6 @@ public class Position {
 	public Position from;
 	private int x;
 	private int y;
-	// private boolean locked;
 
 	/**
 	 * Constructor with X and Y parameters.
@@ -29,7 +28,6 @@ public class Position {
 	public Position(int x, int y) {
 		this.x = x;
 		this.y = y;
-		// this.locked = false;
 	}
 
 	public int getAbsolute(int boardSize) {
@@ -58,7 +56,8 @@ public class Position {
 	}
 
 	/**
-	 * Prints the board with # instead of 0 or 1 where # - is our Knight.
+	 * Prints the board where # - is our Knight, 0 - unvisited and 1 - is visited
+	 * square
 	 * 
 	 * @param b
 	 */
