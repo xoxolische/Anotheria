@@ -20,6 +20,8 @@ import dao.impl.MagicSquareDaoImpl;
 import magic.MagicSquare;
 import model.MSMapper;
 import model.MagicSquareEntity;
+import restful.dto.DTOMapper;
+import restful.dto.MagicSquareDTO;
 
 /**
  * MagicSquare service implementation
@@ -28,7 +30,7 @@ import model.MagicSquareEntity;
  *
  */
 @Path("/magicSquare")
-public class ServiceImpl implements Service<MagicSquareEntity> {
+public class ServiceImpl implements Service<MagicSquareDTO> {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(ServiceImpl.class);
 	
@@ -40,10 +42,10 @@ public class ServiceImpl implements Service<MagicSquareEntity> {
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Override
-	public Response create(MagicSquareEntity entity) {
-		MagicSquare ms = mapper.getMagicSqaure(entity);
+	public Response create(MagicSquareDTO dto) {
+		MagicSquare ms = mapper.getMagicSqaure(DTOMapper.fromDTO(dto));
 		try {
-			dao.create(entity);
+			dao.create(DTOMapper.fromDTO(dto));
 			return Response.status(200).entity("Magic square saved!<br>" + ms.squareToPageView()).build();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -68,9 +70,9 @@ public class ServiceImpl implements Service<MagicSquareEntity> {
 	@PUT
 	@Path("/update")
 	@Override
-	public Response update(MagicSquareEntity entity) {
+	public Response update(MagicSquareDTO dto) {
 		try {
-			dao.update(entity);
+			dao.update(DTOMapper.fromDTO(dto));
 			return Response.status(200).entity("Square updated successfuly!").build();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -108,8 +110,8 @@ public class ServiceImpl implements Service<MagicSquareEntity> {
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Override
-	public Response search(MagicSquareEntity pattern) {
-		List<MagicSquareEntity> l = dao.search(pattern);
+	public Response search(MagicSquareDTO dto) {
+		List<MagicSquareEntity> l = dao.search(DTOMapper.fromDTO(dto));
 		if (l != null) {
 			String view = "Squares: <br>";
 			for (MagicSquareEntity m : l) {

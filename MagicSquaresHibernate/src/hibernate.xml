@@ -14,7 +14,7 @@
 		<property name="dialect">org.hibernate.dialect.MySQL5InnoDBDialect</property>
 		<property name="hibernate.current_session_context_class">thread</property>
 		<property name="hibernate.hbm2ddl.auto">update</property>
-		<mapping class="model.MagicSquareHibernate" />
+		<mapping class="model.MagicSquareEntity" />
 
 	</session-factory>
 </hibernate-configuration>
