@@ -1,6 +1,6 @@
 package restful.dto;
 
-public class MagicSquareDTO {
+public class MagicSquareCreateDTO {
 
 	private String squareView;
 	private long id;
@@ -38,7 +38,7 @@ public class MagicSquareDTO {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		MagicSquareDTO other = (MagicSquareDTO) obj;
+		MagicSquareCreateDTO other = (MagicSquareCreateDTO) obj;
 		if (id != other.id)
 			return false;
 		if (squareView == null) {

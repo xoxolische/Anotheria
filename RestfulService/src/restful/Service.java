@@ -2,6 +2,10 @@ package restful;
 
 import javax.ws.rs.core.Response;
 
+import restful.dto.MagicSquareCreateDTO;
+import restful.dto.MagicSquareSearchDTO;
+import restful.dto.MagicSquareUpdateDTO;
+
 /**
  * CRUD Service interface
  * 
@@ -10,49 +14,52 @@ import javax.ws.rs.core.Response;
  * @param <E>
  *            entity to operate with
  */
-public interface Service<E> {
+public interface Service {
 
 	/**
-	 * Save entity to database.
+	 * Accepts CreateDto entity, map it to Entity and saves to database.
 	 * 
-	 * @param entity
+	 * @param dto
 	 *            to save
-	 * @return 
+	 * @return DtoToUser instance if saved successfully code 200
 	 */
-	Response create(E entity);
+	Response create(MagicSquareCreateDTO dto);
 
 	/**
-	 * Retrieve entity from database.
+	 * Retrieve entity from database by id.
 	 * 
 	 * @param id
 	 *            of entity
-	 * @return 
+	 * @return DtoToUser if present, otherwise error message.
 	 */
 	Response get(long id);
 
 	/**
-	 * Update entity in database.
+	 * Accepts UpdateDto and update entity in database.
 	 * 
-	 * @param entity
+	 * @param dto
 	 *            to update
-	 * @return 
+	 * @return DtoToUser if updated, otherwise error message.
 	 */
-	Response update(E entity);
+	Response update(MagicSquareUpdateDTO dto);
 
 	/**
 	 * Delete entity from database.
 	 * 
 	 * @param id
 	 *            of entity
-	 * @return 
-	 */
-	Response delete(long id);
-	
-	/**
-	 * 
-	 * @param pattern that is our matrix of size n with values
 	 * @return
 	 */
-	Response search(E pattern);
+	Response delete(long id);
+
+	/**
+	 * Accepts MagicSquareSearchDTO, convert to MagicSquareEntity and searches by
+	 * given pattern;
+	 * 
+	 * @param dto
+	 *            to search
+	 * @return List of ToUserDTO if present
+	 */
+	Response search(MagicSquareSearchDTO dto);
 
 }

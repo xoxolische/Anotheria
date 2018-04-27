@@ -1,5 +1,6 @@
 package restful;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import javax.ws.rs.Consumes;
@@ -17,11 +18,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import dao.impl.MagicSquareDaoImpl;
-import magic.MagicSquare;
 import model.MSMapper;
 import model.MagicSquareEntity;
 import restful.dto.DTOMapper;
-import restful.dto.MagicSquareDTO;
+import restful.dto.MagicSquareCreateDTO;
+import restful.dto.MagicSquareSearchDTO;
+import restful.dto.MagicSquareToUserDTO;
+import restful.dto.MagicSquareUpdateDTO;
 
 /**
  * MagicSquare service implementation
@@ -30,10 +33,10 @@ import restful.dto.MagicSquareDTO;
  *
  */
 @Path("/magicSquare")
-public class ServiceImpl implements Service<MagicSquareDTO> {
+public class ServiceImpl implements Service {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(ServiceImpl.class);
-	
+
 	MagicSquareDaoImpl dao = new MagicSquareDaoImpl();
 	MSMapper mapper = new MSMapper();
 
@@ -42,11 +45,11 @@ public class ServiceImpl implements Service<MagicSquareDTO> {
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Override
-	public Response create(MagicSquareDTO dto) {
-		MagicSquare ms = mapper.getMagicSqaure(DTOMapper.fromDTO(dto));
+	public Response create(MagicSquareCreateDTO dto) {
 		try {
-			dao.create(DTOMapper.fromDTO(dto));
-			return Response.status(200).entity("Magic square saved!<br>" + ms.squareToPageView()).build();
+			MagicSquareEntity msEntity = DTOMapper.fromCreateDTOtoEntity(dto);
+			dao.create(msEntity);
+			return Response.status(200).entity(DTOMapper.fromEntityToUserDTO(msEntity)).build();
 		} catch (Exception e) {
 			e.printStackTrace();
 			LOGGER.warn(e.getMessage());
@@ -60,8 +63,7 @@ public class ServiceImpl implements Service<MagicSquareDTO> {
 	public Response get(@PathParam(value = "id") long id) {
 		MagicSquareEntity e = dao.get(id);
 		if (e != null) {
-			MagicSquare ms = mapper.getMagicSqaure(e);
-			return Response.status(200).entity(ms.squareToPageView()).build();
+			return Response.status(200).entity(DTOMapper.fromEntityToUserDTO(e)).build();
 		} else {
 			return Response.status(200).entity("Square with such id does not exists!").build();
 		}
@@ -70,10 +72,11 @@ public class ServiceImpl implements Service<MagicSquareDTO> {
 	@PUT
 	@Path("/update")
 	@Override
-	public Response update(MagicSquareDTO dto) {
+	public Response update(MagicSquareUpdateDTO dto) {
 		try {
-			dao.update(DTOMapper.fromDTO(dto));
-			return Response.status(200).entity("Square updated successfuly!").build();
+			MagicSquareEntity e = DTOMapper.fromUpdateDTOtoEntity(dto);
+			dao.update(e);
+			return Response.status(200).entity(DTOMapper.fromEntityToUserDTO(e)).build();
 		} catch (Exception e) {
 			e.printStackTrace();
 			LOGGER.warn(e.getMessage());
@@ -89,37 +92,42 @@ public class ServiceImpl implements Service<MagicSquareDTO> {
 		return Response.status(200).entity("Square was deleted!").build();
 	}
 
+	/**
+	 * Retrieves all MagicSquares from database.
+	 * 
+	 * @return List of MagicSquareToUserDTO if present
+	 */
 	@GET
 	@Path("/getAll")
 	public Response getAll() {
 		List<MagicSquareEntity> l = dao.getAll();
 		if (l != null) {
-			String view = "";
+			List<MagicSquareToUserDTO> list = new LinkedList<>();
 			for (MagicSquareEntity m : l) {
-				view += m.toString() + "<br>";
+				list.add(DTOMapper.fromEntityToUserDTO(m));
 			}
-			return Response.status(200).entity(view).build();
+			return Response.status(200).entity(list).build();
 		} else {
 			return Response.status(200).entity("No squares in database!").build();
 		}
 	}
-	
-	
+
 	@POST
 	@Path("/search")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Override
-	public Response search(MagicSquareDTO dto) {
-		List<MagicSquareEntity> l = dao.search(DTOMapper.fromDTO(dto));
+	public Response search(MagicSquareSearchDTO dto) {
+		MagicSquareEntity e = DTOMapper.fromSearchDtoToEntity(dto);
+		List<MagicSquareEntity> l = dao.search(e);
 		if (l != null) {
-			String view = "Squares: <br>";
+			List<MagicSquareToUserDTO> list = new LinkedList<>();
 			for (MagicSquareEntity m : l) {
-				view += m.toString() + "<br>";
+				list.add(DTOMapper.fromEntityToUserDTO(m));
 			}
-			return Response.status(200).entity(view).build();
+			return Response.status(200).entity(list).build();
 		} else {
-			return Response.status(200).entity("No squares in database!").build();
+			return Response.status(200).entity("No such squares in database!").build();
 		}
 	}
 
