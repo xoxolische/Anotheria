@@ -1,5 +1,15 @@
 package restful.dto;
-
+/**
+ * DTO for MagicSquareEnity to accept data for search in DB.
+ * <p>
+ * Properties must be set:
+ * <p>
+ * {@link MagicSquareSearchDTO#squarePattern} that is String with numbers separated
+ * by whitespace to search in DB according to principle of SQL operator LIKE "%squarePattern%"
+ * 
+ * @author Nikita Pavlov
+ *
+ */
 public class MagicSquareSearchDTO {
 
 	private String squarePattern;

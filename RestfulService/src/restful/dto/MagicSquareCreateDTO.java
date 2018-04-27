@@ -1,9 +1,19 @@
 package restful.dto;
 
+/**
+ * DTO for MagicSquareEnity to create new entry in DB.
+ * <p>
+ * Properties must be set:
+ * <p>
+ * {@link MagicSquareCreateDTO#squareView} that is String with numbers separated
+ * by whitespace.
+ * 
+ * @author Nikita Pavlov
+ *
+ */
 public class MagicSquareCreateDTO {
 
 	private String squareView;
-	private long id;
 
 	public String getSquareView() {
 		return squareView;
@@ -13,19 +23,10 @@ public class MagicSquareCreateDTO {
 		this.squareView = squareView;
 	}
 
-	public long getId() {
-		return id;
-	}
-
-	public void setId(long id) {
-		this.id = id;
-	}
-
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + (int) (id ^ (id >>> 32));
 		result = prime * result + ((squareView == null) ? 0 : squareView.hashCode());
 		return result;
 	}
@@ -39,8 +40,6 @@ public class MagicSquareCreateDTO {
 		if (getClass() != obj.getClass())
 			return false;
 		MagicSquareCreateDTO other = (MagicSquareCreateDTO) obj;
-		if (id != other.id)
-			return false;
 		if (squareView == null) {
 			if (other.squareView != null)
 				return false;
@@ -51,7 +50,7 @@ public class MagicSquareCreateDTO {
 
 	@Override
 	public String toString() {
-		return "MagicSquareDTO [squareView=" + squareView + ", id=" + id + "]";
+		return "MagicSquareCreateDTO [squareView=" + squareView + "]";
 	}
 
 }

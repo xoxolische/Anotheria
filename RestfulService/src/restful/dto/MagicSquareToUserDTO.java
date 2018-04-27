@@ -2,6 +2,22 @@ package restful.dto;
 
 import java.sql.Timestamp;
 
+/**
+ * DTO for MagicSquareEnity to present it to User.
+ * <p>
+ * Properties must be set:
+ * <p>
+ * {@link MagicSquareSearchDTO#squareView} that is String with numbers separated
+ * by whitespace and represents the MagicSquare.
+ * <p>
+ * {@link MagicSquareSearchDTO#createdAt} creation of MagicSquare Timestamp.
+ * <p>
+ * {@link MagicSquareSearchDTO#editedAt} last change of MagicSquare Timestamp.
+ * 
+ *
+ * @author Nikita Pavlov
+ *
+ */
 public class MagicSquareToUserDTO {
 	private String squareView;
 	private Timestamp createdAt;

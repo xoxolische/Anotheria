@@ -1,5 +1,19 @@
 package restful.dto;
 
+/**
+ * DTO for MagicSquareEnity to accept data for updating MagicSquare.
+ * <p>
+ * Properties must be set:
+ * <p>
+ * {@link MagicSquareSearchDTO#id} id of MagicSquare in database.
+ * <p>
+ * {@link MagicSquareSearchDTO#squareView} that is String with numbers separated
+ * by whitespace and represents new MagicSquare view.
+ * 
+ *
+ * @author Nikita Pavlov
+ *
+ */
 public class MagicSquareUpdateDTO {
 
 	private long id;

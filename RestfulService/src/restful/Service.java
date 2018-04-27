@@ -11,8 +11,6 @@ import restful.dto.MagicSquareUpdateDTO;
  * 
  * @author Nikita Pavlov
  *
- * @param <E>
- *            entity to operate with
  */
 public interface Service {
 
