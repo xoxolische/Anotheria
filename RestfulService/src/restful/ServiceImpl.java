@@ -17,6 +17,7 @@ import javax.ws.rs.core.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import cache.Cache;
 import dao.impl.MagicSquareDaoImpl;
 import model.MSMapper;
 import model.MagicSquareEntity;
@@ -34,6 +35,12 @@ import restful.dto.MagicSquareUpdateDTO;
  */
 @Path("/magicSquare")
 public class ServiceImpl implements Service {
+
+	private static final Cache<Long, MagicSquareToUserDTO> GET_BY_ID_CACHE = new Cache<>("getById", 1000, Long.class,
+			MagicSquareToUserDTO.class);
+	@SuppressWarnings("unchecked")
+	private static final Cache<Integer, List<MagicSquareToUserDTO>> SEARCH_CACHE = new Cache<>("search", 1000,
+			Integer.class, (Class<List<MagicSquareToUserDTO>>) new LinkedList<MagicSquareToUserDTO>().getClass());
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(ServiceImpl.class);
 
@@ -55,17 +62,25 @@ public class ServiceImpl implements Service {
 			LOGGER.warn(e.getMessage());
 			return Response.status(500).entity("Something went wrong!").build();
 		}
+
 	}
 
 	@GET
 	@Path("/{id}")
 	@Override
 	public Response get(@PathParam(value = "id") long id) {
-		MagicSquareEntity e = dao.get(id);
-		if (e != null) {
-			return Response.status(200).entity(DTOMapper.fromEntityToUserDTO(e)).build();
+		if (GET_BY_ID_CACHE.get(id) != null) {
+			System.out.println("Cache used for id= " + id);
+			return Response.status(200).entity(GET_BY_ID_CACHE.get(id)).build();
 		} else {
-			return Response.status(200).entity("Square with such id does not exists!").build();
+			MagicSquareEntity e = dao.get(id);
+			if (e != null) {
+				MagicSquareToUserDTO toUser = DTOMapper.fromEntityToUserDTO(e);
+				GET_BY_ID_CACHE.put(id, toUser);
+				return Response.status(200).entity(toUser).build();
+			} else {
+				return Response.status(200).entity("Square with such id does not exists!").build();
+			}
 		}
 	}
 
@@ -118,16 +133,22 @@ public class ServiceImpl implements Service {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Override
 	public Response search(MagicSquareSearchDTO dto) {
-		MagicSquareEntity e = DTOMapper.fromSearchDtoToEntity(dto);
-		List<MagicSquareEntity> l = dao.search(e);
-		if (l != null) {
-			List<MagicSquareToUserDTO> list = new LinkedList<>();
-			for (MagicSquareEntity m : l) {
-				list.add(DTOMapper.fromEntityToUserDTO(m));
-			}
-			return Response.status(200).entity(list).build();
+		if (SEARCH_CACHE.get(dto.getSquarePattern().hashCode()) != null) {
+			System.out.println("Cache used for pattern : " + dto.getSquarePattern());
+			return Response.status(200).entity(SEARCH_CACHE.get(dto.getSquarePattern().hashCode())).build();
 		} else {
-			return Response.status(200).entity("No such squares in database!").build();
+			MagicSquareEntity e = DTOMapper.fromSearchDtoToEntity(dto);
+			List<MagicSquareEntity> l = dao.search(e);
+			if (l != null) {
+				List<MagicSquareToUserDTO> list = new LinkedList<>();
+				for (MagicSquareEntity m : l) {
+					list.add(DTOMapper.fromEntityToUserDTO(m));
+				}
+				SEARCH_CACHE.put(dto.getSquarePattern().hashCode(), list);
+				return Response.status(200).entity(list).build();
+			} else {
+				return Response.status(200).entity("No such squares in database!").build();
+			}
 		}
 	}
 
