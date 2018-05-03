@@ -3,7 +3,7 @@ package restful.dto;
 import model.MagicSquareEntity;
 
 /**
- * Class designed with purpose to convert DTO instances to Entity and vice versa
+ * Class created with purpose to convert DTO instances to Entity and vice versa
  * 
  * @author Nikita Pavlov
  *

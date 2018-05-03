@@ -70,4 +70,20 @@ public class Connection implements Runnable {
 		}
 	}
 
+	public Socket getClientFileSocket() {
+		return clientFileSocket;
+	}
+
+	public void setClientFileSocket(Socket clientFileSocket) {
+		this.clientFileSocket = clientFileSocket;
+	}
+
+	public Socket getClientCommandSocket() {
+		return clientCommandSocket;
+	}
+
+	public void setClientCommandSocket(Socket clientCommandSocket) {
+		this.clientCommandSocket = clientCommandSocket;
+	}
+
 }

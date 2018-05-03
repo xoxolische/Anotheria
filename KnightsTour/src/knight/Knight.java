@@ -43,10 +43,9 @@ public class Knight {
 	 */
 	public List<Position> possibleMoves(Board b) {
 		if (possibleMovesCache.get(this.p) == null) {
-			System.out.println("added from " + this.p.toChessNotation());
+			// System.out.println("added from " + this.p.toChessNotation());
 			possibleMovesCache.put(this.p, movesFromCurrentLocation(b));
 		}
-		//List<Position> p = new LinkedList<>();
 		pos.clear();
 		for (Position possible : possibleMovesCache.get(this.p)) {
 			if (!b.isVisited(possible)) {
@@ -159,6 +158,14 @@ public class Knight {
 		this.p = to;// new Position(to.getX(), to.getY());
 	}
 
+	public void moveBack(Board b) {
+		Position previous = this.positions.get(positions.size() - 2);
+		Position last = this.positions.get(positions.size() - 1);
+		b.setVisited(last, false);
+		this.p = previous;
+		this.positions.remove(this.p);
+	}
+
 	private boolean onBoard(Board b, Position p) {
 		int index = p.getAbsolute(b.getSize());
 		if (p.getX() <= (b.getSize() - 1) && p.getX() >= 0 && p.getY() <= b.getSize() - 1 && p.getY() >= 0
@@ -169,7 +176,8 @@ public class Knight {
 	}
 
 	/**
-	 * Check if tour is closed
+	 * Check if tour is closed (visited all squares, no check for return in start
+	 * position)
 	 * 
 	 * @param b
 	 *            board
@@ -220,6 +228,22 @@ public class Knight {
 			s += p.toString() + " => ";
 		}
 		return s;
+	}
+
+	public Position getP() {
+		return p;
+	}
+
+	public void setP(Position p) {
+		this.p = p;
+	}
+
+	public List<Position> getPositions() {
+		return positions;
+	}
+
+	public void setPositions(List<Position> positions) {
+		this.positions = positions;
 	}
 
 }

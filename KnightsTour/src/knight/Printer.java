@@ -44,8 +44,18 @@ public class Printer {
 	 */
 	public static void printHistoryMovesOneLine(Knight k) {
 		for (Position p : k.getMovesHistory()) {
-			System.out.print(p.toString() + " -> ");
+			System.out.print(p.toChessNotation() + " -> ");
 		}
+		System.out.print("The end.");
 	}
+	
+//	public static void printBoard(Board b) {
+//		for(int i=0; i<b.getSize(); i++) {
+//			for(int j=i; j<b.getSize() + i; j++) {				
+//				System.out.print(b.getBoard()[j] + " ");
+//			}
+//			System.out.println("");
+//		}
+//	}
 
 }

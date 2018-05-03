@@ -6,12 +6,13 @@ import java.util.Set;
 import java.util.Stack;
 
 /**
- * This class represents solution finder
+ * This class represents solution finder which will find all knight`s tours for
+ * given board and knight.
  * 
  * @author Nikita Pavlov
  *
  */
-public class SolutionFinder {
+public class SolutionsFinder {
 
 	private Stack<Position> possibleMoves;
 	private Board b;
@@ -24,7 +25,7 @@ public class SolutionFinder {
 	 * @param b
 	 *            Board entity
 	 */
-	public SolutionFinder(Knight k, Board b) {
+	public SolutionsFinder(Knight k, Board b) {
 		this.b = b;
 		this.k = k;
 		possibleMoves = new Stack<>();
@@ -54,10 +55,10 @@ public class SolutionFinder {
 			} else {
 				if (k.isClosedTour(b)) {
 					closed.add(k.getMovesHistory());
-					//Printer.l(k.getMovesHistoryString());
-					//System.out.println("!");
+					// Printer.l(k.getMovesHistoryString());
+					// System.out.println("!");
 				} else {
-					
+
 				}
 				if (possibleMoves.empty()) {
 					System.out.println("The end.");
@@ -65,14 +66,14 @@ public class SolutionFinder {
 					pop = possibleMoves.pop();
 					k.goBackUntillReacheble(pop, b);
 					possibleMoves.push(pop);
-					if(!k.possibleMoves(b).contains(pop)) {
+					if (!k.possibleMoves(b).contains(pop)) {
 						break;
 					}
 				}
 			}
 			long end = System.nanoTime();
 			long duration = end - start;
-			//System.out.printf("Time sec : %f\n" , (double) duration / 1000000000.0);
+			System.out.printf("Time sec : %f\n", (double) duration / 1000000000.0);
 		}
 		System.out.println(closed.size());
 	}
