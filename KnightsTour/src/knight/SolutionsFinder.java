@@ -8,6 +8,8 @@ import java.util.Stack;
 /**
  * This class represents solution finder which will find all knight`s tours for
  * given board and knight.
+ * <p>
+ * Using DFS algorithm
  * 
  * @author Nikita Pavlov
  *
