@@ -57,10 +57,6 @@ public class SolutionsFinder {
 			} else {
 				if (k.isClosedTour(b)) {
 					closed.add(k.getMovesHistory());
-					// Printer.l(k.getMovesHistoryString());
-					// System.out.println("!");
-				} else {
-
 				}
 				if (possibleMoves.empty()) {
 					System.out.println("The end.");
