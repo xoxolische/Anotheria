@@ -22,11 +22,21 @@ public class SingleSolutionFinder {
 	private Knight k;
 	private Board b;
 
+	/**
+	 * 
+	 * @param k
+	 *            knight
+	 * @param b
+	 *            board
+	 */
 	public SingleSolutionFinder(Knight k, Board b) {
 		this.k = k;
 		this.b = b;
 	}
 
+	/**
+	 * Search for a single solution and print it to the console
+	 */
 	public void search() {
 		b.print(k);
 		k.move(k.getPosition(), b);

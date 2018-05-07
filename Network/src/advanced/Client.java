@@ -152,6 +152,7 @@ public class Client {
 						if (cc.isCommand(s)) {
 							c.cmd(s);
 							if (cc instanceof DIRCommand) {
+								@SuppressWarnings("unchecked")
 								List<String> l = (List<String>) c.recieve();
 								for (String f : l) {
 									System.out.println(f);
