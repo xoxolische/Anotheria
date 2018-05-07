@@ -47,7 +47,7 @@ public class Cache<K, V> {
 
 	/**
 	 * 
-	 * @return Cache entity
+	 * @return org.ehcache.Cache entity
 	 */
 	public org.ehcache.Cache<K, V> getCache() {
 		return cacheManager.getCache(name, key, value);
