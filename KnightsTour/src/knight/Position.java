@@ -7,7 +7,13 @@ package knight;
  *
  */
 public class Position {
+	/**
+	 * Array of letters for chess view
+	 */
 	private static final char[] X = "abcdefghijklmnopqrstuvwxyz".toCharArray();
+	/**
+	 * Array of numbers for chess view
+	 */
 	private static final int[] Y = new int[X.length];
 	static {
 		for (int i = 0; i < X.length; i++) {

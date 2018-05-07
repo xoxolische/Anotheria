@@ -20,6 +20,8 @@ public class Solution {
 	}
 
 	/**
+	 * Recursively fills rows with different queen position in columns and check if
+	 * it does not conflicts with other
 	 * 
 	 * @param n
 	 *            Size of board
@@ -39,10 +41,6 @@ public class Solution {
 		return result;
 	}
 
-	/*
-	 * Recursively fills rows with different queen position in columns and check if
-	 * it does not conflicts with other
-	 */
 	private void solutions(int start, int total, String[] rows, List<String[]> result) {
 		if (start >= total) {
 			result.add(rows.clone());

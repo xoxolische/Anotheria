@@ -13,9 +13,21 @@ import java.util.Map;
  */
 public class Knight {
 
+	/**
+	 * Current Knight`s X and Y position on board.
+	 */
 	private Position p;
+	/**
+	 * Moves history of Knight
+	 */
 	private List<Position> positions;
+	/**
+	 * Possible moves cache to improve performance and avoid recalculations.
+	 */
 	private static Map<Position, List<Position>> possibleMovesCache = new HashMap<>();
+	/**
+	 * List with possible moves that we calculate or retrieve from the cache
+	 */
 	private static List<Position> pos = new LinkedList<>();
 
 	/**
@@ -43,7 +55,6 @@ public class Knight {
 	 */
 	public List<Position> possibleMoves(Board b) {
 		if (possibleMovesCache.get(this.p) == null) {
-			// System.out.println("added from " + this.p.toChessNotation());
 			possibleMovesCache.put(this.p, movesFromCurrentLocation(b));
 		}
 		pos.clear();
@@ -62,69 +73,37 @@ public class Knight {
 		Position newPos;
 
 		newPos = new Position(this.p.getX() + 2, this.p.getY() + 1);
-		// newPos.from = this.p;
-		// if (onBoard(b, newPos) && !b.isVisited(newPos)) {
 		if (onBoard(b, newPos)) {
 			possibleMoves.add(newPos);
-			// System.out.println("!");
 		}
-		// }
-
 		newPos = new Position(this.p.getX() + 2, this.p.getY() - 1);
-		// newPos.from = this.p;
-		// if (onBoard(b, newPos) && !b.isVisited(newPos)) {
 		if (onBoard(b, newPos)) {
 			possibleMoves.add(newPos);
 		}
-		// }
-
 		newPos = new Position(this.p.getX() + 1, this.p.getY() - 2);
-		// newPos.from = this.p;
-		// if (onBoard(b, newPos) && !b.isVisited(newPos)) {
 		if (onBoard(b, newPos)) {
 			possibleMoves.add(newPos);
 		}
-		// }
-
 		newPos = new Position(this.p.getX() - 1, this.p.getY() - 2);
-		// newPos.from = this.p;
-		// if (onBoard(b, newPos) && !b.isVisited(newPos)) {
 		if (onBoard(b, newPos)) {
 			possibleMoves.add(newPos);
 		}
-		// }
-
 		newPos = new Position(this.p.getX() - 2, this.p.getY() - 1);
-		// newPos.from = this.p;
-		// if (onBoard(b, newPos) && !b.isVisited(newPos)) {
 		if (onBoard(b, newPos)) {
 			possibleMoves.add(newPos);
 		}
-		// }
-		//
 		newPos = new Position(this.p.getX() - 2, this.p.getY() + 1);
-		// newPos.from = this.p;
-		// if (onBoard(b, newPos) && !b.isVisited(newPos)) {
 		if (onBoard(b, newPos)) {
 			possibleMoves.add(newPos);
 		}
-		// }
-
 		newPos = new Position(this.p.getX() - 1, this.p.getY() + 2);
-		// newPos.from = this.p;
-		// if (onBoard(b, newPos) && !b.isVisited(newPos)) {
 		if (onBoard(b, newPos)) {
 			possibleMoves.add(newPos);
 		}
-		/// }
-		//
 		newPos = new Position(this.p.getX() + 1, this.p.getY() + 2);
-		// newPos.from = this.p;
-		// if (onBoard(b, newPos) && !b.isVisited(newPos)) {
 		if (onBoard(b, newPos)) {
 			possibleMoves.add(newPos);
 		}
-		// }
 		return possibleMoves;
 	}
 
@@ -158,6 +137,12 @@ public class Knight {
 		this.p = to;// new Position(to.getX(), to.getY());
 	}
 
+	/**
+	 * Moves our Knight backward 1 step.
+	 * 
+	 * @param b
+	 *            Board
+	 */
 	public void moveBack(Board b) {
 		Position previous = this.positions.get(positions.size() - 2);
 		Position last = this.positions.get(positions.size() - 1);

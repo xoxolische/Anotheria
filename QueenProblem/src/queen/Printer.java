@@ -15,7 +15,7 @@ public class Printer {
 	}
 
 	/**
-	 * Prints out to console all solutions
+	 * Prints out to the console all solutions
 	 * 
 	 * @param result
 	 *            List of String[]

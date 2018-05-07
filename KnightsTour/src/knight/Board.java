@@ -8,7 +8,13 @@ package knight;
  */
 public class Board {
 
+	/**
+	 * Array of size^2 represents chess board
+	 */
 	private int[] board;
+	/**
+	 * int value contains size of the current board
+	 */
 	private int size;
 
 	/**
